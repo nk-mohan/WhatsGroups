@@ -22,4 +22,10 @@
     <style name="Theme.WhatsGroups.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.WhatsGroups.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CustomAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorAccent">@color/purple_500</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 </resources>
