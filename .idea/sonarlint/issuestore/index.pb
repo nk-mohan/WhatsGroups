@@ -5,12 +5,8 @@ f
 6app/src/main/java/com/seabird/whatsdev/network/Test.kt,8\9\89b66976118cffe56307aaad7cac135c6afb563d
 q
 Aapp/src/main/java/com/seabird/whatsdev/network/model/GroupData.kt,8\1\815bc12e489cc42a276db08842aa517a80f774b4
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 f
 6app/src/main/java/com/seabird/whatsdev/AppExtension.kt,8\a\8ae0f6d44b37c0a7a550a702795d4bc8087bf9e1
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 u
 Eapp/src/main/java/com/seabird/whatsdev/ui/views/CustomRecyclerView.kt,1\f\1f60d4240af5edf184a0dabc0b4abe5a6e75f8d3
 o
@@ -39,5 +35,5 @@ Gapp/src/main/java/com/seabird/whatsdev/ui/views/SpacesItemDecoration.kt,b\b\bb
 Mapp/src/main/java/com/seabird/whatsdev/ui/statussaver/StatusSaverViewModel.kt,0\3\030a113518e6713e2954338d2c06e2c107e91ee6
 v
 Fapp/src/main/java/com/seabird/whatsdev/ui/category/CategoryFragment.kt,e\a\eaf21c9652de0cf2be5bfe08f6d713f5ac959b4b
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+>
+app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
