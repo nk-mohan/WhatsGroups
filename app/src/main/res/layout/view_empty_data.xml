@@ -1,0 +1,14 @@
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_empty_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/TextSubTitle"
+    android:layout_marginTop="@dimen/dimen_200"
+    android:gravity="center"
+    android:padding="@dimen/dimen_10"
+    android:textColor="@android:color/darker_gray"
+    android:textSize="@dimen/text_18"
+    android:visibility="gone">
+
+
+</androidx.appcompat.widget.AppCompatTextView>
