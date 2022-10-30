@@ -5,18 +5,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.seabird.whatsdev.R
-import com.seabird.whatsdev.ui.statussaver.PlaceholderFragment
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_image,
     R.string.tab_video
 )
 
-
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
-        return PlaceholderFragment.newInstance(position + 1)
+        return if (position == 0)
+            StatusImageFragment.newInstance()
+        else StatusVideoFragment.newInstance()
     }
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -24,6 +24,6 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : 
     }
 
     override fun getCount(): Int {
-        return 2
+        return TAB_TITLES.size
     }
 }

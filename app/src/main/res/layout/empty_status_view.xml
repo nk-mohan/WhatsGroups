@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/empty_view_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view_empty_status"
+        android:layout_width="@dimen/dimen_100"
+        android:layout_height="@dimen/dimen_100"
+        android:layout_marginTop="@dimen/dimen_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_empty_status" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/no_status_found"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_status_found"
+        android:textSize="@dimen/text_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_empty_status" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/to_view_status"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_15"
+        android:text="@string/to_view_status"
+        app:layout_constraintStart_toStartOf="@+id/no_status_found"
+        app:layout_constraintTop_toBottomOf="@+id/no_status_found" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step_1"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20"
+        android:text="@string/step_1"
+        app:layout_constraintStart_toStartOf="@+id/no_status_found"
+        app:layout_constraintTop_toBottomOf="@+id/to_view_status" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step_2"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5"
+        android:text="@string/step_2"
+        app:layout_constraintStart_toStartOf="@+id/no_status_found"
+        app:layout_constraintTop_toBottomOf="@+id/step_1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/step_3"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5"
+        android:text="@string/step_3"
+        app:layout_constraintStart_toStartOf="@+id/no_status_found"
+        app:layout_constraintTop_toBottomOf="@+id/step_2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/view_status"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_50"
+        android:background="@drawable/ic_view_status_background"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:insetLeft="@dimen/dimen_10"
+        android:insetRight="@dimen/dimen_10"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/view_status"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

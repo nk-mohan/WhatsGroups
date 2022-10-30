@@ -12,6 +12,10 @@
         android:name="android.permission.WRITE_INTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <queries>
+        <package android:name="com.whatsapp" />
+    </queries>
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
