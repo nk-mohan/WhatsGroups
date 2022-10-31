@@ -15,8 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.seabird.whatsdev.databinding.FragmentStatusSaverBinding
 import com.seabird.whatsdev.utils.PermissionAlertDialog
 import com.seabird.whatsdev.utils.PermissionDialogListener
@@ -71,11 +72,15 @@ class StatusSaverFragment : Fragment() {
     }
 
     private fun setUpViews() {
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), requireActivity().supportFragmentManager)
-        val viewPager: ViewPager = binding.viewPager
+        val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), requireActivity())
+
+        val viewPager: ViewPager2 = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.currentItem = 0
         val tabs: TabLayout = binding.tabs
-        tabs.setupWithViewPager(viewPager)
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = sectionsPagerAdapter.getTabTitle(position)
+        }.attach()
     }
 
 
