@@ -6,16 +6,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowStatusItemBinding
 
-class StatusViewHolder(private val viewBinding: RowStatusItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
+class StatusViewHolder(private val viewBinding: RowStatusItemBinding, val onItemClicked: (Int) -> Unit) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(uri: Uri) {
+    fun bindValues(uri: Uri, position: Int) {
         viewBinding.uri = uri
+
+        viewBinding.imageView.setOnClickListener {
+            onItemClicked(position)
+        }
     }
 
     companion object {
-        fun create(parent: ViewGroup): StatusViewHolder {
+        fun create(parent: ViewGroup, onItemClicked: (Int) -> Unit): StatusViewHolder {
             val binding = RowStatusItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return StatusViewHolder(binding)
+            return StatusViewHolder(binding, onItemClicked)
         }
     }
 }

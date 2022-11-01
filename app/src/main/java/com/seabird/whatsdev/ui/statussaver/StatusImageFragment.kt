@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentStatusImageBinding
+import com.seabird.whatsdev.utils.AppConstants
 
 
 class StatusImageFragment : Fragment() {
@@ -47,6 +50,13 @@ class StatusImageFragment : Fragment() {
             if (launchIntent != null) {
                 startActivity(launchIntent)
             }
+        }
+
+        statusAdapter.setItemClickListener {
+            val bundle = Bundle()
+            bundle.putInt(AppConstants.MEDIA_POSITION, it)
+            bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, true)
+            findNavController().navigate(R.id.nav_status_viewer, bundle)
         }
     }
 

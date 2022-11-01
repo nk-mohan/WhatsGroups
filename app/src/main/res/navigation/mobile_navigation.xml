@@ -21,5 +21,24 @@
         android:id="@+id/nav_status_saver"
         android:name="com.seabird.whatsdev.ui.statussaver.StatusSaverFragment"
         android:label="@string/menu_status_saver"
-        tools:layout="@layout/fragment_status_saver" />
+        tools:layout="@layout/fragment_status_saver">
+        <action
+            android:id="@+id/action_status_to_status_viewer"
+            app:destination="@id/nav_status_viewer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_status_viewer"
+        android:name="com.seabird.whatsdev.ui.statussaver.FullScreenMediaFragment"
+        android:label="@string/menu_status_saver"
+        tools:layout="@layout/fragment_full_screen_media">
+        <argument
+            android:name="media_position"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="from_image_list"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </fragment>
 </navigation>
