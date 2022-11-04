@@ -6,10 +6,9 @@
     android:background="@color/black"
     tools:context=".ui.statussaver.FullScreenMediaFragment">
 
-    <com.seabird.zoomimageview.ZoomImageView
-        android:id="@+id/image_view"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

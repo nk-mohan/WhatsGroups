@@ -41,4 +41,13 @@
             android:defaultValue="true"
             app:argType="boolean" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_video_player"
+        android:name="com.seabird.whatsdev.ui.statussaver.VideoPlayerFragment"
+        tools:layout="@layout/fragment_video_player">
+        <argument
+            android:name="video_uri"
+            app:argType="string" />
+    </fragment>
 </navigation>

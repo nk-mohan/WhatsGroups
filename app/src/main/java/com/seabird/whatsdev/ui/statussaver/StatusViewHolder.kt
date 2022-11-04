@@ -2,6 +2,7 @@ package com.seabird.whatsdev.ui.statussaver
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowStatusItemBinding
@@ -10,6 +11,15 @@ class StatusViewHolder(private val viewBinding: RowStatusItemBinding, val onItem
 
     fun bindValues(uri: Uri, position: Int) {
         viewBinding.uri = uri
+
+        if (uri.path!!.contains(".jpg"))
+            viewBinding.playLayout.visibility = View.GONE
+        else
+            viewBinding.playLayout.visibility = View.VISIBLE
+
+        viewBinding.playLayout.setOnClickListener {
+            onItemClicked(position)
+        }
 
         viewBinding.imageView.setOnClickListener {
             onItemClicked(position)
