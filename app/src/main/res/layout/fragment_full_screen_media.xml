@@ -1,14 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".ui.statussaver.FullScreenMediaFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/back_view"
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_back_arrow"
+            android:drawablePadding="@dimen/dimen_10"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/dimen_10"
+            android:text="@string/tab_image"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_16"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/download_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingTop="@dimen/dimen_10"
+            android:paddingBottom="@dimen/dimen_10"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_download_status" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/share_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingTop="@dimen/dimen_15"
+            android:paddingBottom="@dimen/dimen_15"
+            android:scaleType="fitCenter"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintEnd_toStartOf="@+id/download_status"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_share_staus" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/repost_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingTop="@dimen/dimen_15"
+            android:paddingBottom="@dimen/dimen_15"
+            android:scaleType="fitCenter"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintEnd_toStartOf="@+id/share_status"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_repost_status" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

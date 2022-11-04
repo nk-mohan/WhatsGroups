@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.seabird.whatsdev.databinding.FragmentVideoPlayerBinding
@@ -21,6 +22,7 @@ class VideoPlayerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity?)?.supportActionBar?.hide()
         _binding = FragmentVideoPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,6 +45,9 @@ class VideoPlayerFragment : Fragment() {
             start()
         }
 
+        binding.backView.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,5 @@
 package com.seabird.whatsdev.ui.statussaver
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,13 +19,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.seabird.whatsdev.databinding.FragmentStatusSaverBinding
-import com.seabird.whatsdev.utils.PermissionAlertDialog
-import com.seabird.whatsdev.utils.PermissionDialogListener
-import com.seabird.whatsdev.utils.PermissionManager
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
+
 class StatusSaverFragment : Fragment() {
 
     private var _binding: FragmentStatusSaverBinding? = null
@@ -35,17 +30,6 @@ class StatusSaverFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val statusSaverViewModel: StatusSaverViewModel by activityViewModels()
-
-    @Inject
-    lateinit var permissionAlertDialog: PermissionAlertDialog
-
-    private val storagePermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        val readPermissionGranted = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: PermissionManager.isReadFilePermissionAllowed(requireContext())
-        if(readPermissionGranted) {
-            checkWhatsappFolderPermission()
-        }
-    }
 
     private val whatsappPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
@@ -60,6 +44,7 @@ class StatusSaverFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity?)?.supportActionBar?.show()
         _binding = FragmentStatusSaverBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -87,24 +72,6 @@ class StatusSaverFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun readFilesFromStorage() {
-        if (PermissionManager.isReadFilePermissionAllowed(requireContext())
-            && PermissionManager.isWriteFilePermissionAllowed(requireContext())) {
-            checkWhatsappFolderPermission()
-        } else {
-            PermissionManager.requestStoragePermission(requireActivity(), permissionAlertDialog, storagePermissionLauncher, object :
-                PermissionDialogListener {
-                override fun onPositiveButtonClicked() {
-                    //Not Needed
-                }
-
-                override fun onNegativeButtonClicked() {
-                    // Not needed
-                }
-            })
-        }
     }
 
     private fun checkWhatsappFolderPermission() {

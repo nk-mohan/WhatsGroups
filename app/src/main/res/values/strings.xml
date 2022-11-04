@@ -16,8 +16,8 @@
     <string name="continue_label">Continue</string>
     <string name="not_now_label">Not Now</string>
 
-    <string name="storage_permission_alert_label">To read and save whatsapp status, allow Whats Groups access to your Storage.</string>
-    <string name="storage_permission_denied_alert_label">Whats Groups need the Storage Permission in order to read and save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
+    <string name="storage_permission_alert_label">To save whatsapp status, allow Whats Groups access to your Storage.</string>
+    <string name="storage_permission_denied_alert_label">Whats Groups need the Storage Permission in order to save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
 
     <string name="no_status_found">No Status Found</string>
     <string name="to_view_status">To View status</string>
@@ -28,4 +28,7 @@
 
     <string name="file_viewing_message">You may not have a proper app viewing this content</string>
     <string name="content_not_found">Content not found</string>
+    <string name="status_folder_label">WhatsApp Status</string>
+    <string name="status_saved">Status Saved</string>
+    <string name="share_status_desc">"Save Your Friend\'s Status \nStatus Downloader\nhttps://play.google.com/store/apps/details?id=com.wimlog.gogosing"</string>
 </resources>
