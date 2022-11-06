@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowStatusItemBinding
 
-class StatusViewHolder(private val viewBinding: RowStatusItemBinding, val onItemClicked: (Int) -> Unit) : RecyclerView.ViewHolder(viewBinding.root) {
+class StatusViewHolder(private val viewBinding: RowStatusItemBinding,) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(uri: Uri, position: Int) {
+    fun bindValues(uri: Uri, position: Int, onItemClicked: (Int) -> Unit) {
         viewBinding.uri = uri
 
-        if (uri.path!!.contains(".jpg"))
+        if (uri.path!!.contains(".jpg")) {
             viewBinding.playLayout.visibility = View.GONE
-        else
+        } else {
             viewBinding.playLayout.visibility = View.VISIBLE
+        }
 
         viewBinding.playLayout.setOnClickListener {
             onItemClicked(position)
@@ -27,9 +28,9 @@ class StatusViewHolder(private val viewBinding: RowStatusItemBinding, val onItem
     }
 
     companion object {
-        fun create(parent: ViewGroup, onItemClicked: (Int) -> Unit): StatusViewHolder {
+        fun create(parent: ViewGroup): StatusViewHolder {
             val binding = RowStatusItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return StatusViewHolder(binding, onItemClicked)
+            return StatusViewHolder(binding)
         }
     }
 }

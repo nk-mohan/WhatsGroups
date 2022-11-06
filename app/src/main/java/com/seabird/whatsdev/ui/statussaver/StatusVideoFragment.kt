@@ -37,9 +37,11 @@ class StatusVideoFragment : Fragment() {
     }
 
     private fun setUpViews() {
+        binding.shimmerLayout.startShimmer()
+
         binding.rvStatusVideo.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
-            setEmptyView(binding.emptyView.emptyViewLayout)
+            setEmptyView(null)
             adapter = statusAdapter
             addItemDecoration(GridSpacingItemDecoration(requireContext(), 3))
         }
@@ -55,10 +57,13 @@ class StatusVideoFragment : Fragment() {
 
     private fun setObservers() {
         statusSaverViewModel.videoList.observe(viewLifecycleOwner) {
+            binding.rvStatusVideo.setEmptyView(binding.emptyView.emptyViewLayout)
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
             statusAdapter.setMedias(it)
         }
 
-        statusAdapter.setItemClickListener {
+        statusAdapter.setVideoItemClickListener {
             val bundle = Bundle()
             bundle.putInt(AppConstants.MEDIA_POSITION, it)
             bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, false)

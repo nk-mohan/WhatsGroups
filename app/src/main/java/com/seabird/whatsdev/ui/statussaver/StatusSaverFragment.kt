@@ -31,6 +31,8 @@ class StatusSaverFragment : Fragment() {
 
     private val statusSaverViewModel: StatusSaverViewModel by activityViewModels()
 
+    var isDestroyed = true
+
     private val whatsappPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         result.data?.data?.let { treeUri ->
@@ -53,7 +55,10 @@ class StatusSaverFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpViews()
-        checkWhatsappFolderPermission()
+        if (isDestroyed) {
+            isDestroyed = false
+            checkWhatsappFolderPermission()
+        }
     }
 
     private fun setUpViews() {

@@ -38,9 +38,11 @@ class StatusImageFragment : Fragment() {
     }
 
     private fun setUpViews() {
+        binding.shimmerLayout.startShimmer()
+
         binding.rvStatusImage.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
-            setEmptyView(binding.emptyView.emptyViewLayout)
+            setEmptyView(null)
             adapter = statusAdapter
             addItemDecoration(GridSpacingItemDecoration(requireContext(), 3))
         }
@@ -62,6 +64,9 @@ class StatusImageFragment : Fragment() {
 
     private fun setObservers() {
         statusSaverViewModel.imageList.observe(viewLifecycleOwner) {
+            binding.rvStatusImage.setEmptyView(binding.emptyView.emptyViewLayout)
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
             statusAdapter.setMedias(it)
         }
     }
