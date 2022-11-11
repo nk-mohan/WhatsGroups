@@ -6,25 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowStatusItemBinding
+import com.seabird.whatsdev.setSafeOnClickListener
 
-class StatusViewHolder(private val viewBinding: RowStatusItemBinding,) : RecyclerView.ViewHolder(viewBinding.root) {
+class StatusViewHolder(private val viewBinding: RowStatusItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(uri: Uri, position: Int, onItemClicked: (Int) -> Unit) {
+    fun bindValues(uri: Uri, position: Int, isSelected: Boolean, onItemClicked: (Int) -> Unit, onItemLongClicked: (Int) -> Unit) {
+
         viewBinding.uri = uri
+        viewBinding.playLayout.visibility = if (uri.path!!.contains(".jpg")) View.GONE else View.VISIBLE
+        viewBinding.selectedLayout.visibility = if (isSelected) View.VISIBLE else View.GONE
 
-        if (uri.path!!.contains(".jpg")) {
-            viewBinding.playLayout.visibility = View.GONE
-        } else {
-            viewBinding.playLayout.visibility = View.VISIBLE
-        }
-
-        viewBinding.playLayout.setOnClickListener {
+        viewBinding.playLayout.setSafeOnClickListener {
             onItemClicked(position)
         }
 
-        viewBinding.imageView.setOnClickListener {
+        viewBinding.imageView.setSafeOnClickListener {
             onItemClicked(position)
         }
+
+        viewBinding.imageView.setOnLongClickListener {
+            onItemLongClicked(position)
+            false
+        }
+
+        viewBinding.playLayout.setOnLongClickListener {
+            onItemLongClicked(position)
+            false
+        }
+    }
+
+    fun updateSelection(isSelected: Boolean) {
+        viewBinding.selectedLayout.visibility = if (isSelected) View.VISIBLE else View.GONE
     }
 
     companion object {

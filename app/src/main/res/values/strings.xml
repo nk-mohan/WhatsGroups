@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Whats Groups</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -25,10 +25,17 @@
     <string name="step_2">2. View wanted status</string>
     <string name="step_3">3. Come back again</string>
     <string name="view_status">View Status</string>
+    <string name="action_save_status">Save Status</string>
 
     <string name="file_viewing_message">You may not have a proper app viewing this content</string>
     <string name="content_not_found">Content not found</string>
     <string name="status_folder_label">WhatsApp Status</string>
     <string name="status_saved">Status Saved</string>
     <string name="share_status_desc">"Save Your Friend\'s Status \nStatus Downloader\nhttps://play.google.com/store/apps/details?id=com.wimlog.gogosing"</string>
+
+
+    <string name="negative_button" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="status_download">Downloading Status</string>
+    <string name="status_downloading">Downloading…</string>
+    <string name="downloading_count">"%d/%d"</string>
 </resources>

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.seabird.whatsdev.databinding.RowImageItemBinding
+import com.seabird.whatsdev.setSafeOnClickListener
 
 class ViewPagerAdapter(private val imageUrlList: List<Uri>) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
@@ -27,7 +28,7 @@ class ViewPagerAdapter(private val imageUrlList: List<Uri>) :
                 binding.imageView.isZoomable = false
             }
 
-            binding.playLayout.setOnClickListener {
+            binding.playLayout.setSafeOnClickListener {
                 onItemClicked(mediaUri)
             }
         }

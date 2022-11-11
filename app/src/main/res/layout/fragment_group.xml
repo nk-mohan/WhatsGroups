@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/linen"
-    tools:context=".ui.home.GroupFragment">
+    tools:context=".ui.groups.GroupFragment">
 
     <com.seabird.whatsdev.ui.views.CustomRecyclerView
         android:id="@+id/rv_group_list"

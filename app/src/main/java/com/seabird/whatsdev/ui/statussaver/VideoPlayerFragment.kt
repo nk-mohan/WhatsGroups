@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.seabird.whatsdev.databinding.FragmentVideoPlayerBinding
+import com.seabird.whatsdev.setSafeOnClickListener
+import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.AppConstants
 
 
@@ -23,6 +25,7 @@ class VideoPlayerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
+        (activity as MainActivity).lockNavigationDrawer()
         _binding = FragmentVideoPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,13 +48,14 @@ class VideoPlayerFragment : Fragment() {
             start()
         }
 
-        binding.backView.setOnClickListener {
+        binding.backView.setSafeOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).unlockNavigationDrawer()
         _binding = null
     }
 }

@@ -1,4 +1,4 @@
-package com.seabird.whatsdev.ui.home
+package com.seabird.whatsdev.ui.groups
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

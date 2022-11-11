@@ -1,4 +1,4 @@
-package com.seabird.whatsdev.ui.home
+package com.seabird.whatsdev.ui.groups
 
 import android.net.Uri
 import androidx.appcompat.widget.AppCompatImageView

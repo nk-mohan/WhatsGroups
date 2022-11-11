@@ -20,6 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.databinding.FragmentFullScreenMediaBinding
+import com.seabird.whatsdev.setSafeOnClickListener
+import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -60,6 +62,7 @@ class FullScreenMediaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
+        (activity as MainActivity).lockNavigationDrawer()
         _binding = FragmentFullScreenMediaBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -98,23 +101,23 @@ class FullScreenMediaFragment : Fragment() {
             findNavController().navigate(R.id.nav_video_player, bundle)
         }
 
-        binding.downloadStatus.setOnClickListener {
+        binding.downloadStatus.setSafeOnClickListener {
             lastClickAction = 0
             checkWritePermission()
         }
 
-        binding.shareStatus.setOnClickListener {
+        binding.shareStatus.setSafeOnClickListener {
             lastClickAction = 1
             checkWritePermission()
         }
 
-        binding.repostStatus.setOnClickListener {
+        binding.repostStatus.setSafeOnClickListener {
             lastClickAction = 2
             checkWritePermission()
 
         }
 
-        binding.backView.setOnClickListener {
+        binding.backView.setSafeOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -124,6 +127,7 @@ class FullScreenMediaFragment : Fragment() {
         binding.viewPager.unregisterOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {}
         )
+        (activity as MainActivity).unlockNavigationDrawer()
         _binding = null
     }
 
@@ -203,5 +207,6 @@ class FullScreenMediaFragment : Fragment() {
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_status_desc)))
         }
     }
+
 
 }

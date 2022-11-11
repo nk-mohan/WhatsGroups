@@ -11,12 +11,13 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:actionModeBackground">@color/purple_500</item>
     </style>
 
     <style name="Theme.WhatsGroups.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="Theme.WhatsGroups.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -1,4 +1,4 @@
-package com.seabird.whatsdev.ui.home
+package com.seabird.whatsdev.ui.groups
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
