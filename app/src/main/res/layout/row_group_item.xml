@@ -63,10 +63,49 @@
                         style="@style/TextSubDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/purple_200"
-                        android:text="@{groupData.groupCategory}" />
+                        android:text="@{groupData.groupCategory}"
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
+
+                <!--                <com.google.android.material.textview.MaterialTextView-->
+                <!--                    android:id="@+id/view_join_now"-->
+                <!--                    style="@style/TextSubTitle"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:paddingTop="@dimen/dimen_5"-->
+                <!--                    android:paddingBottom="@dimen/dimen_5"-->
+                <!--                    android:paddingStart="@dimen/dimen_20"-->
+                <!--                    android:paddingEnd="@dimen/dimen_20"-->
+                <!--                    android:background="@drawable/ic_join_background"-->
+                <!--                    android:foreground="?attr/selectableItemBackgroundBorderless"-->
+                <!--                    android:text="@string/join_now"-->
+                <!--                    android:textAllCaps="true"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"/>-->
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_not_favorite" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/views_count_text_view"
+                    style="@style/TextSubDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_views"
+                    android:drawablePadding="@dimen/dimen_5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{String.valueOf(groupData.viewsCount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

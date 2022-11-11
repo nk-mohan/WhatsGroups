@@ -38,4 +38,6 @@
     <string name="status_download">Downloading Status</string>
     <string name="status_downloading">Downloading…</string>
     <string name="downloading_count">"%d/%d"</string>
+
+    <string name="join_now">Join</string>
 </resources>

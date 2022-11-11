@@ -3,6 +3,7 @@ package com.seabird.whatsdev.ui.groups
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.RowGroupItemBinding
 import com.seabird.whatsdev.network.model.GroupData
 
@@ -10,6 +11,10 @@ class GroupsViewHolder(private var viewBinding: RowGroupItemBinding) : RecyclerV
 
     fun bindValues(groupData: GroupData) {
         viewBinding.groupData = groupData
+
+        viewBinding.favorite.setOnClickListener {
+            viewBinding.favorite.setImageResource(R.drawable.ic_favorite)
+        }
     }
 
     companion object {
