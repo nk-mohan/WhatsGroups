@@ -18,7 +18,7 @@ class GroupFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val homeViewModel by viewModels<GroupViewModel>()
+    private val groupViewModel by viewModels<GroupViewModel>()
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
 
@@ -36,11 +36,11 @@ class GroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         setObservers()
-        homeViewModel.getGroupList()
+        groupViewModel.getGroupList()
     }
 
     private fun setObservers() {
-        homeViewModel.groupList.observe(viewLifecycleOwner) {
+        groupViewModel.groupList.observe(viewLifecycleOwner) {
             groupsAdapter.setGroupList(it)
         }
     }

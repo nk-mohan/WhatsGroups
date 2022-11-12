@@ -22,8 +22,10 @@ class GroupsAdapter : RecyclerView.Adapter<GroupsViewHolder>() {
     }
 
     fun setGroupList(groupData: List<GroupData>) {
+        val length = groupList.size
         groupList.clear()
+        notifyItemRangeRemoved(0, length)
         groupList.addAll(groupData)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, groupData.size)
     }
 }
