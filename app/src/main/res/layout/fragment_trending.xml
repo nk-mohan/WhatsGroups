@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.trending.TrendingFragment">
+
+    <com.seabird.whatsdev.ui.views.CustomRecyclerView
+        android:id="@+id/rv_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/color_transparent"
+        android:footerDividersEnabled="true"
+        android:listSelector="@color/color_transparent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/empty_list"
+        layout="@layout/view_empty_data" />
+
+</FrameLayout>

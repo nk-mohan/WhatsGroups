@@ -16,5 +16,15 @@
             android:id="@+id/nav_status_saver"
             android:icon="@drawable/ic_menu_status_saver"
             android:title="@string/menu_status_saver" />
+
+        <item
+            android:id="@+id/nav_favorite_groups"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/menu_favorite" />
+
+        <item
+            android:id="@+id/nav_trending_groups"
+            android:icon="@drawable/ic_menu_trending"
+            android:title="@string/menu_trending" />
     </group>
 </menu>

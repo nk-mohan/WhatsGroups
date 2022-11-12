@@ -10,6 +10,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_category">Category</string>
     <string name="menu_status_saver">Status Saver</string>
+    <string name="menu_favorite">Favorite</string>
+    <string name="menu_trending">Trending</string>
     <string name="tab_image">Images</string>
     <string name="tab_video">Videos</string>
 
@@ -40,4 +42,6 @@
     <string name="downloading_count">"%d/%d"</string>
 
     <string name="join_now">Join</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

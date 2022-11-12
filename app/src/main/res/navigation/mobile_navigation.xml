@@ -50,4 +50,17 @@
             android:name="video_uri"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_favorite_groups"
+        android:name="com.seabird.whatsdev.ui.favorite.FavoriteFragment"
+        android:label="@string/menu_favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/nav_trending_groups"
+        android:name="com.seabird.whatsdev.ui.trending.TrendingFragment"
+        android:label="@string/menu_trending"
+        tools:layout="@layout/fragment_trending" />
+
 </navigation>
