@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.databinding.FragmentFavoriteBinding
+import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.ui.groups.GroupViewModel
 import com.seabird.whatsdev.ui.groups.GroupsAdapter
 
@@ -18,7 +19,7 @@ class FavoriteFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val groupViewModel by viewModels<GroupViewModel>()
+    private val groupViewModel: GroupViewModel by activityViewModels()
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
 
@@ -28,6 +29,7 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.show()
+        (activity as MainActivity).showAddGroupAction()
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }

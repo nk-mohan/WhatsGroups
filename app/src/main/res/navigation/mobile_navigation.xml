@@ -63,4 +63,10 @@
         android:label="@string/menu_trending"
         tools:layout="@layout/fragment_trending" />
 
+    <fragment
+        android:id="@+id/nav_add_group"
+        android:name="com.seabird.whatsdev.ui.addgroup.AddGroupFragment"
+        android:label="@string/action_add_group"
+        tools:layout="@layout/fragment_add_group" />
+
 </navigation>

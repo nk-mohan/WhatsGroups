@@ -63,6 +63,7 @@ class FullScreenMediaFragment : Fragment() {
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
         (activity as MainActivity).lockNavigationDrawer()
+        (activity as MainActivity).hideAddGroupAction()
         _binding = FragmentFullScreenMediaBinding.inflate(inflater, container, false)
         return binding.root
     }

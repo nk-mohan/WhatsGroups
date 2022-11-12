@@ -26,6 +26,7 @@ class VideoPlayerFragment : Fragment() {
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
         (activity as MainActivity).lockNavigationDrawer()
+        (activity as MainActivity).hideAddGroupAction()
         _binding = FragmentVideoPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }

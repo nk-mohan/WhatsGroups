@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -57,10 +57,6 @@ class MainActivity : AppCompatActivity(), ActivityListener {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -73,6 +69,10 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        binding.appBarMain.addGroup.setOnClickListener {
+            navController.navigate(R.id.nav_add_group)
+        }
     }
 
     private fun setUpActionMode() {
@@ -154,6 +154,16 @@ class MainActivity : AppCompatActivity(), ActivityListener {
             setUpActionMode()
         } else
             actionMode?.title = statusSaverViewModel.selectedList.size.toString()
+    }
+
+    override fun hideAddGroupAction() {
+        if (::binding.isInitialized)
+            binding.appBarMain.addGroup.visibility = View.GONE
+    }
+
+    override fun showAddGroupAction() {
+        if (::binding.isInitialized)
+            binding.appBarMain.addGroup.visibility = View.VISIBLE
     }
 
     override fun onBackPressed() {

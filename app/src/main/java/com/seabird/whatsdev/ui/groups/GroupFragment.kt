@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.databinding.FragmentGroupBinding
+import com.seabird.whatsdev.ui.MainActivity
 
 class GroupFragment : Fragment() {
 
@@ -18,7 +19,7 @@ class GroupFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val groupViewModel by viewModels<GroupViewModel>()
+    private val groupViewModel:GroupViewModel by activityViewModels()
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
 
@@ -46,6 +47,7 @@ class GroupFragment : Fragment() {
     }
 
     private fun initViews() {
+        (activity as MainActivity).showAddGroupAction()
         binding.emptyList.textEmptyView.text = "Group list not loaded"
         binding.rvGroupList.apply {
             layoutManager = LinearLayoutManager(requireContext())
