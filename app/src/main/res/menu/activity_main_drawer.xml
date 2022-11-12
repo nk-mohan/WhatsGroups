@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_main_section"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
@@ -27,4 +29,30 @@
             android:icon="@drawable/ic_menu_trending"
             android:title="@string/menu_trending" />
     </group>
+
+    <item android:title="@string/menu_other_option">
+        <menu>
+            <group
+                android:id="@+id/menu_other_section"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_share_app"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="@string/menu_share_app" />
+                <item
+                    android:id="@+id/nav_give_star"
+                    android:icon="@drawable/ic_menu_star"
+                    android:title="@string/menu_give_star" />
+                <item
+                    android:id="@+id/nav_about_us"
+                    android:icon="@drawable/ic_menu_about"
+                    android:title="@string/menu_about_us" />
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_menu_settings"
+                    android:title="@string/menu_settings" />
+            </group>
+        </menu>
+    </item>
 </menu>
