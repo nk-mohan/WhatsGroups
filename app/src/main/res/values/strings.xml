@@ -48,6 +48,38 @@
     <string name="downloading_count">"%d/%d"</string>
 
     <string name="join_now">Join</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="add_group_description_label">Below groups will be shown under the selected category.</string>
+
+    <string name="select_category">Select Category</string>
+    <string name="arts_and_design">Arts &amp; Design</string>
+    <string name="audios_and_videos">Audios &amp; Videos</string>
+    <string name="business_and_finance">Business &amp; Finance</string>
+    <string name="buy_and_sell">Buy &amp; Sell</string>
+    <string name="community">Community</string>
+    <string name="education">Education</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="fitness_and_health">Fitness &amp; Health</string>
+    <string name="food">Food</string>
+    <string name="funny">Funny</string>
+    <string name="games">Games</string>
+    <string name="love_and_dating">Love &amp; Dating</string>
+    <string name="medical">Medical</string>
+    <string name="new_friends">New Friends</string>
+    <string name="news">News</string>
+    <string name="social_media">Social Media</string>
+    <string name="spiritual">Spiritual</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="travels_and_places">Travels &amp; Places</string>
+    <string name="other">Other</string>
+
+    <string name="group_name">Group Name</string>
+    <string name="group_link">Group Link</string>
+    <string name="group_description">Group Description</string>
+    <string name="validation_category">Please Select a Category</string>
+    <string name="validation_group_name">Please Enter group name</string>
+    <string name="validation_group_link">Please Enter group link</string>
+    <string name="validation_group_description">Please Enter group description</string>
+    <string name="group_added">Group Added</string>
 </resources>

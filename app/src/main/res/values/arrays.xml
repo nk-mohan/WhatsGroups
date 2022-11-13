@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="categories">
+        <item>@string/select_category</item>
+        <item>@string/arts_and_design</item>
+        <item>@string/audios_and_videos</item>
+        <item>@string/business_and_finance</item>
+        <item>@string/buy_and_sell</item>
+        <item>@string/community</item>
+        <item>@string/education</item>
+        <item>@string/entertainment</item>
+        <item>@string/fitness_and_health</item>
+        <item>@string/food</item>
+        <item>@string/funny</item>
+        <item>@string/games</item>
+        <item>@string/love_and_dating</item>
+        <item>@string/medical</item>
+        <item>@string/new_friends</item>
+        <item>@string/news</item>
+        <item>@string/social_media</item>
+        <item>@string/spiritual</item>
+        <item>@string/sports</item>
+        <item>@string/technology</item>
+        <item>@string/travels_and_places</item>
+        <item>@string/other</item>
+    </string-array>
+
+</resources>
