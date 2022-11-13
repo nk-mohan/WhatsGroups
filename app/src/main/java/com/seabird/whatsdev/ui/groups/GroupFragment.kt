@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentGroupBinding
 import com.seabird.whatsdev.ui.MainActivity
+import com.seabird.whatsdev.utils.AppConstants
 
 class GroupFragment : Fragment() {
 
@@ -19,7 +22,7 @@ class GroupFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val groupViewModel:GroupViewModel by activityViewModels()
+    private val groupViewModel: GroupViewModel by activityViewModels()
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
 
@@ -43,6 +46,12 @@ class GroupFragment : Fragment() {
     private fun setObservers() {
         groupViewModel.groupList.observe(viewLifecycleOwner) {
             groupsAdapter.setGroupList(it)
+        }
+
+        groupsAdapter.setItemClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(AppConstants.GROUP_DATA, it)
+            findNavController().navigate(R.id.nav_view_group, bundle)
         }
     }
 

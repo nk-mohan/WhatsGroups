@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.RowGroupItemBinding
 import com.seabird.whatsdev.network.model.GroupData
+import com.seabird.whatsdev.setSafeOnClickListener
 
 class GroupsViewHolder(private var viewBinding: RowGroupItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(groupData: GroupData) {
+    fun bindValues(groupData: GroupData, onItemClicked: (GroupData) -> Unit) {
         viewBinding.groupData = groupData
 
-        viewBinding.favorite.setOnClickListener {
+        viewBinding.favorite.setSafeOnClickListener {
             viewBinding.favorite.setImageResource(R.drawable.ic_favorite)
+        }
+
+        viewBinding.rootLayout.setSafeOnClickListener {
+            onItemClicked(groupData)
         }
     }
 

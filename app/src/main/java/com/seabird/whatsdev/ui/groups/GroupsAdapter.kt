@@ -14,7 +14,7 @@ class GroupsAdapter : RecyclerView.Adapter<GroupsViewHolder>() {
 
     override fun onBindViewHolder(holder: GroupsViewHolder, position: Int) {
         val groupData = groupList[position]
-        holder.bindValues(groupData)
+        holder.bindValues(groupData, onItemClicked)
     }
 
     override fun getItemCount(): Int {
@@ -27,5 +27,13 @@ class GroupsAdapter : RecyclerView.Adapter<GroupsViewHolder>() {
         notifyItemRangeRemoved(0, length)
         groupList.addAll(groupData)
         notifyItemRangeInserted(0, groupData.size)
+    }
+
+    fun setItemClickListener(fn: (GroupData) -> Unit) {
+        onItemClicked = fn
+    }
+
+    companion object {
+        lateinit var onItemClicked: (GroupData) -> Unit
     }
 }

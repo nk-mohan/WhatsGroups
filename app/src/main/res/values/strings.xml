@@ -7,6 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_add_group">Add Group</string>
+    <string name="action_view_group">View Group</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_category">Category</string>
@@ -47,7 +48,7 @@
     <string name="status_downloading">Downloading…</string>
     <string name="downloading_count">"%d/%d"</string>
 
-    <string name="join_now">Join</string>
+    <string name="join_group">Join Group</string>
 
     <string name="add_group_description_label">Below groups will be shown under the selected category.</string>
 
@@ -82,4 +83,10 @@
     <string name="validation_group_link">Please Enter group link</string>
     <string name="validation_group_description">Please Enter group description</string>
     <string name="group_added">Group Added</string>
+
+    <string name="description">Description</string>
+    <string name="group_desc">This group used to share updates about current market status and provide valuable information about stocks which are trading lower price or stocks having high potential to reach high. Please join with us for further updates.</string>
+    <string name="group_join_link">https://chat.whatsapp.com/KsExMEv4W16EzRSxDxSeuL</string>
+    <string name="copy_group_link">Copy link</string>
+    <string name="share_group_link">Share link</string>
 </resources>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="groupData"
+            type="com.seabird.whatsdev.network.model.GroupData" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.viewgroup.ViewGroupFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/group_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_15"
+                android:paddingEnd="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_15"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.seabird.whatsdev.ui.views.CircularImageView
+                    android:id="@+id/image_group"
+                    android:layout_width="@dimen/dimen_50"
+                    android:layout_height="@dimen/dimen_50"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:loadImageInGlide="@{groupData.groupDescription}" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/dimen_10"
+                    android:paddingEnd="@dimen/dimen_10"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/image_group"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/group_name_text_view"
+                        style="@style/TextSubTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{groupData.groupName}" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/group_category_text_view"
+                        style="@style/TextSubDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{groupData.groupCategory}"
+                        android:textColor="@color/purple_200" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_not_favorite" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/views_count_text_view"
+                    style="@style/TextSubDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_views"
+                    android:drawablePadding="@dimen/dimen_5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{String.valueOf(groupData.viewsCount)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/group_layout_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_1"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@+id/group_layout" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/desc_title_text_view"
+                style="@style/TextSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_10"
+                android:paddingEnd="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_10"
+                android:text="@string/description"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/group_layout_divider" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/group_desc_text_view"
+                style="@style/TextSubDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_10"
+                android:paddingEnd="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_10"
+                android:text="@string/group_desc"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/desc_title_text_view" />
+
+            <View
+                android:id="@+id/group_desc_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_1"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@+id/group_desc_text_view" />
+
+            <RelativeLayout
+                android:id="@+id/image_group_link"
+                android:layout_width="@dimen/dimen_50"
+                android:layout_height="@dimen/dimen_50"
+                android:layout_margin="@dimen/dimen_20"
+                android:background="@drawable/ic_group_link_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/group_desc_divider">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/ic_group_link" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/group_link_text_view"
+                style="@style/TextSubDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_20"
+                android:layout_marginEnd="@dimen/dimen_20"
+                android:text="@string/group_join_link"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/image_group_link"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_group_link"
+                app:layout_constraintTop_toTopOf="@+id/image_group_link" />
+
+            <RelativeLayout
+                android:id="@+id/image_copy_group_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_5"
+                android:paddingEnd="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_group_link">
+
+                <RelativeLayout
+                    android:id="@+id/copy_link"
+                    android:layout_width="@dimen/dimen_50"
+                    android:layout_height="@dimen/dimen_50">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        app:srcCompat="@drawable/ic_copy_link" />
+                </RelativeLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/copy_group_link_text_view"
+                    style="@style/TextSubDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_20"
+                    android:layout_marginEnd="@dimen/dimen_20"
+                    android:layout_toEndOf="@+id/copy_link"
+                    android:text="@string/copy_group_link"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/image_share_group_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_5"
+                android:paddingEnd="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_copy_group_link">
+
+                <RelativeLayout
+                    android:id="@+id/share_link"
+                    android:layout_width="@dimen/dimen_50"
+                    android:layout_height="@dimen/dimen_50">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        app:srcCompat="@drawable/ic_share_link" />
+                </RelativeLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/share_group_link_text_view"
+                    style="@style/TextSubDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_20"
+                    android:layout_marginEnd="@dimen/dimen_20"
+                    android:layout_toEndOf="@+id/share_link"
+                    android:text="@string/share_group_link"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/view_join_now"
+                style="@style/TextSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_20"
+                android:background="@drawable/ic_join_background"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/dimen_12"
+                android:text="@string/join_group"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/image_share_group_link" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
