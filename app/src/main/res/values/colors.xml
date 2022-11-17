@@ -11,6 +11,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="silver">#D5D9DC</color>
     <color name="linen">#EFE7DE</color>
+    <color name="icon_color">#25D366</color>
     <color name="color_transparent">#00000000</color>
     <color name="category_shape_shadow">#6B000000</color>
     <color name="selected_shape_shadow">#B3000000</color>

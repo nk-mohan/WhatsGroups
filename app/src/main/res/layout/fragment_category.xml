@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:divider="@color/color_transparent"
         android:footerDividersEnabled="true"
+        android:paddingBottom="@dimen/dimen_10"
         android:listSelector="@color/color_transparent"
         app:layout_constraintTop_toTopOf="parent" />
 
