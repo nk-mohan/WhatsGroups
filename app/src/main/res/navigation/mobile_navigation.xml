@@ -79,4 +79,10 @@
             app:argType="com.seabird.whatsdev.network.model.GroupData" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.seabird.whatsdev.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

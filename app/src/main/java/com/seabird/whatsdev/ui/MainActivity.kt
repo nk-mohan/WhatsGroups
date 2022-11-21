@@ -1,6 +1,9 @@
 package com.seabird.whatsdev.ui
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
@@ -8,14 +11,14 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationView
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.ActivityMainBinding
 import com.seabird.whatsdev.ui.statussaver.StatusSaverViewModel
@@ -72,6 +75,30 @@ class MainActivity : AppCompatActivity(), ActivityListener {
 
         binding.appBarMain.addGroup.setOnClickListener {
             navController.navigate(R.id.nav_add_group)
+        }
+
+        navView.menu.findItem(R.id.nav_share_app).setOnMenuItemClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_status_desc))
+            startActivity(Intent.createChooser(intent, "Share via"))
+            true
+        }
+
+        navView.menu.findItem(R.id.nav_give_star).setOnMenuItemClickListener {
+            val uri: Uri = Uri.parse("market://details?id=$packageName")
+            val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            try {
+                startActivity(goToMarket)
+            } catch (e: ActivityNotFoundException) {
+                startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")))
+            }
+            true
         }
     }
 

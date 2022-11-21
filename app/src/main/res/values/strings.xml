@@ -89,4 +89,9 @@
     <string name="group_join_link">https://chat.whatsapp.com/KsExMEv4W16EzRSxDxSeuL</string>
     <string name="copy_group_link">Copy link</string>
     <string name="share_group_link">Share link</string>
+
+    <string name="more_apps">More Apps</string>
+    <string name="more_apps_desc">Check More Apps Created by Us.</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="version_name">Version %s</string>
 </resources>
