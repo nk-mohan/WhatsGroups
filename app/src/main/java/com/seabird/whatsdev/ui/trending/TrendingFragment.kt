@@ -21,7 +21,7 @@ class TrendingFragment : Fragment() {
 
     private val groupViewModel by activityViewModels<GroupViewModel>()
 
-    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
+    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,19 +38,22 @@ class TrendingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         setObservers()
+        groupsAdapter.groupList = groupViewModel.groups
         groupViewModel.getGroupList()
     }
 
     private fun setObservers() {
-        groupViewModel.groupList.observe(viewLifecycleOwner) {
-            groupsAdapter.setGroupList(it)
+        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsAdapter.notifyItemInserted(it)
         }
     }
 
     private fun initViews() {
         binding.emptyList.textEmptyView.text = "Group list not loaded"
         binding.rvGroupList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
+                isSmoothScrollbarEnabled = true
+            }
             adapter = groupsAdapter
             setEmptyView(binding.emptyList.textEmptyView)
         }

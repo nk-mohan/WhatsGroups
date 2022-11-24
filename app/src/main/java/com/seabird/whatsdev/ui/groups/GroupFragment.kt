@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.R
@@ -24,7 +25,7 @@ class GroupFragment : Fragment() {
 
     private val groupViewModel: GroupViewModel by activityViewModels()
 
-    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter() }
+    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +41,13 @@ class GroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         setObservers()
+        groupsAdapter.groupList = groupViewModel.groups
         groupViewModel.getGroupList()
     }
 
     private fun setObservers() {
-        groupViewModel.groupList.observe(viewLifecycleOwner) {
-            groupsAdapter.setGroupList(it)
+        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsAdapter.notifyItemInserted(it)
         }
 
         groupsAdapter.setItemClickListener {
@@ -59,7 +61,9 @@ class GroupFragment : Fragment() {
         (activity as MainActivity).showAddGroupAction()
         binding.emptyList.textEmptyView.text = "Group list not loaded"
         binding.rvGroupList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
+                isSmoothScrollbarEnabled = true
+            }
             adapter = groupsAdapter
             setEmptyView(binding.emptyList.textEmptyView)
         }

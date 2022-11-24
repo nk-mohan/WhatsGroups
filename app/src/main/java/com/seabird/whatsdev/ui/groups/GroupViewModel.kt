@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 class GroupViewModel : ViewModel() {
 
-    val groupList = MutableLiveData<List<GroupData>>()
-    private val groupDatas = mutableListOf<GroupData>()
+    var groups= mutableListOf<GroupData>()
+    var notifyNewGroupInsertedLiveData = MutableLiveData<Int>()
 
     fun getGroupList() {
-        if (groupDatas.isEmpty())
+        if (groups.isEmpty())
             viewModelScope.launch(Dispatchers.IO) {
                 val group1 = GroupData(
                     "Crypto Currencies",
@@ -99,23 +99,27 @@ class GroupViewModel : ViewModel() {
                     "https://img.freepik.com/free-vector/blue-breaking-news-tv-background_1017-14201.jpg",
                     334
                 )
-                groupDatas.add(group1)
-                groupDatas.add(group2)
-                groupDatas.add(group3)
-                groupDatas.add(group4)
-                groupDatas.add(group5)
-                groupDatas.add(group6)
-                groupDatas.add(group7)
-                groupDatas.add(group8)
-                groupDatas.add(group9)
-                groupDatas.add(group10)
-                groupDatas.add(group11)
-                groupDatas.add(group12)
-                groupDatas.add(group13)
-                groupDatas.add(group14)
-                groupList.postValue(groupDatas)
+                addDataToUI(group1)
+                addDataToUI(group2)
+                addDataToUI(group3)
+                addDataToUI(group4)
+                addDataToUI(group5)
+                addDataToUI(group6)
+                addDataToUI(group7)
+                addDataToUI(group8)
+                addDataToUI(group9)
+                addDataToUI(group10)
+                addDataToUI(group11)
+                addDataToUI(group12)
+                addDataToUI(group13)
+                addDataToUI(group14)
             }
-        else
-            groupList.postValue(groupDatas)
+    }
+
+    private fun addDataToUI(group: GroupData) {
+        groups.add(group)
+        viewModelScope.launch(Dispatchers.Main) {
+            notifyNewGroupInsertedLiveData.value = groups.size
+        }
     }
 }

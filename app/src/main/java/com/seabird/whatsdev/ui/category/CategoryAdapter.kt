@@ -4,9 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.network.model.CategoryData
 
-class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
-
-    private val categoryList = arrayListOf<CategoryData>()
+class CategoryAdapter(var categoryList: MutableList<CategoryData>) : RecyclerView.Adapter<CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder.create(parent)
@@ -19,11 +17,5 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
 
     override fun getItemCount(): Int {
         return categoryList.size
-    }
-
-    fun setCategories(categoryData: List<CategoryData>){
-        categoryList.clear()
-        categoryList.addAll(categoryData)
-        notifyDataSetChanged()
     }
 }

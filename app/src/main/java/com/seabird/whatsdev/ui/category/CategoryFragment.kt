@@ -22,7 +22,7 @@ class CategoryFragment : Fragment() {
 
     private val categoryViewModel: CategoryViewModel by activityViewModels()
 
-    private val categoryAdapter by lazy { CategoryAdapter() }
+    private val categoryAdapter by lazy { CategoryAdapter(mutableListOf()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,19 +39,22 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         setObservers()
+        categoryAdapter.categoryList = categoryViewModel.categorys
         categoryViewModel.getCategoryList()
     }
 
     private fun setObservers() {
-        categoryViewModel.categoryList.observe(viewLifecycleOwner) {
-            categoryAdapter.setCategories(it)
+        categoryViewModel.notifyNewCategoryInsertedLiveData.observe(viewLifecycleOwner) {
+            categoryAdapter.notifyItemInserted(it)
         }
     }
 
     private fun initViews() {
         binding.emptyList.textEmptyView.text = "Category list not loaded"
         binding.rvCategoryList.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), 2).apply {
+                isSmoothScrollbarEnabled = true
+            }
             adapter = categoryAdapter
             addItemDecoration(SpacesItemDecoration(requireContext(), 2))
             setEmptyView(binding.emptyList.textEmptyView)

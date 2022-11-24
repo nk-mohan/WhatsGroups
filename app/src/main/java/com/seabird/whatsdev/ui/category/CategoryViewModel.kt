@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel : ViewModel() {
 
-    val categoryList = MutableLiveData<List<CategoryData>>()
+    var categorys= mutableListOf<CategoryData>()
+    var notifyNewCategoryInsertedLiveData = MutableLiveData<Int>()
 
     fun getCategoryList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val categoryDatas = mutableListOf<CategoryData>()
             val category12 = CategoryData("Arts & Design", "https://images.pexels.com/photos/3951832/pexels-photo-3951832.jpeg")
             val category13 = CategoryData("Audios & Videos", "https://images.pexels.com/photos/5367423/pexels-photo-5367423.jpeg")
             val category14 = CategoryData("Business & Finance", "https://images.pexels.com/photos/7433871/pexels-photo-7433871.jpeg")
@@ -28,21 +28,27 @@ class CategoryViewModel : ViewModel() {
             val category9 = CategoryData("Sports", "https://images.pexels.com/photos/69773/uss-nimitz-basketball-silhouettes-sea-69773.jpeg")
             val category10 = CategoryData("Technology", "https://img.freepik.com/free-photo/medium-shot-man-wearing-vr-glasses_23-2149126949.jpg")
             val category11 = CategoryData("Other", "https://img.freepik.com/free-vector/man-woman-touching-each-other-when-work-is-done_1150-35029.jpg")
-            categoryDatas.add(category12)
-            categoryDatas.add(category13)
-            categoryDatas.add(category14)
-            categoryDatas.add(category1)
-            categoryDatas.add(category2)
-            categoryDatas.add(category3)
-            categoryDatas.add(category4)
-            categoryDatas.add(category5)
-            categoryDatas.add(category6)
-            categoryDatas.add(category7)
-            categoryDatas.add(category8)
-            categoryDatas.add(category9)
-            categoryDatas.add(category10)
-            categoryDatas.add(category11)
-            categoryList.postValue(categoryDatas)
+            addDataToUI(category12)
+            addDataToUI(category13)
+            addDataToUI(category14)
+            addDataToUI(category1)
+            addDataToUI(category2)
+            addDataToUI(category3)
+            addDataToUI(category4)
+            addDataToUI(category5)
+            addDataToUI(category6)
+            addDataToUI(category7)
+            addDataToUI(category8)
+            addDataToUI(category9)
+            addDataToUI(category10)
+            addDataToUI(category11)
+        }
+    }
+
+    private fun addDataToUI(category: CategoryData) {
+        categorys.add(category)
+        viewModelScope.launch(Dispatchers.Main) {
+            notifyNewCategoryInsertedLiveData.value = categorys.size
         }
     }
 
