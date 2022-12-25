@@ -1,16 +1,84 @@
 package com.seabird.whatsdev.ui.groups
 
+import android.os.Build
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seabird.whatsdev.network.model.GroupData
+import com.seabird.whatsdev.network.model.*
+import com.seabird.whatsdev.network.other.Resource
+import com.seabird.whatsdev.network.repository.AppRepository
+import com.seabird.whatsdev.utils.AppConstants
+import com.seabird.whatsdev.utils.SharedPreferenceManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GroupViewModel : ViewModel() {
+@HiltViewModel
+class GroupViewModel @Inject constructor(
+    private val appRepository: AppRepository
+): ViewModel() {
 
-    var groups= mutableListOf<GroupData>()
+    private val _registerRes = MutableLiveData<Resource<RegisterResponse>>()
+
+    val registerRes : LiveData<Resource<RegisterResponse>>
+        get() = _registerRes
+
+    var groups = mutableListOf<GroupData>()
     var notifyNewGroupInsertedLiveData = MutableLiveData<Int>()
+
+    init {
+        groups = mutableListOf()
+        notifyNewGroupInsertedLiveData = MutableLiveData<Int>()
+        checkAndRegister()
+    }
+
+    private fun checkAndRegister() {
+        viewModelScope.launch {
+            if (SharedPreferenceManager.getStringValue(AppConstants.REFRESH_TOKEN).isNullOrBlank()) {
+                if (!SharedPreferenceManager.getBooleanValue(AppConstants.IS_REGISTERED)) {
+                    _registerRes.postValue(Resource.loading(null))
+                    appRepository.registerUser(
+                        RegisterRequest(
+                            device_id = SharedPreferenceManager.getStringValue(AppConstants.DEVICE_ID),
+                            device_model = Build.MODEL,
+                            device_os_version = Build.VERSION.RELEASE
+                        )
+                    ).let {
+                        if (it.isSuccessful) {
+                            SharedPreferenceManager.setBooleanValue(AppConstants.IS_REGISTERED, true)
+                            it.body()?.user?.let { user ->
+                                SharedPreferenceManager.setStringValue(AppConstants.ACCESS_TOKEN, user.access_token)
+                                SharedPreferenceManager.setStringValue(AppConstants.REFRESH_TOKEN, user.refresh_token)
+                            }
+                            getGroupList()
+                        } else {
+                            _registerRes.postValue(Resource.error(it.errorBody().toString(), it.code(), null))
+                        }
+                    }
+                } else {
+                    _registerRes.postValue(Resource.loading(null))
+                    appRepository.loginUser(
+                        LoginRequest(device_id = SharedPreferenceManager.getStringValue(AppConstants.DEVICE_ID))
+                    ).let {
+                        if (it.isSuccessful) {
+                            SharedPreferenceManager.setBooleanValue(AppConstants.IS_REGISTERED, true)
+                            it.body()?.user?.let { user ->
+                                SharedPreferenceManager.setStringValue(AppConstants.ACCESS_TOKEN, user.access_token)
+                                SharedPreferenceManager.setStringValue(AppConstants.REFRESH_TOKEN, user.refresh_token)
+                            }
+                            getGroupList()
+                        } else {
+                            _registerRes.postValue(Resource.error(it.errorBody().toString(), it.code(), null))
+                        }
+                    }
+                }
+            } else {
+                getGroupList()
+            }
+        }
+    }
 
     fun getGroupList() {
         if (groups.isEmpty())

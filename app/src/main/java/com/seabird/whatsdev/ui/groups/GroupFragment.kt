@@ -1,6 +1,7 @@
 package com.seabird.whatsdev.ui.groups
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,12 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.R
+import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.databinding.FragmentGroupBinding
+import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.AppConstants
+import com.seabird.whatsdev.utils.SharedPreferenceManager
 
 class GroupFragment : Fragment() {
 
@@ -42,7 +46,6 @@ class GroupFragment : Fragment() {
         initViews()
         setObservers()
         groupsAdapter.groupList = groupViewModel.groups
-        groupViewModel.getGroupList()
     }
 
     private fun setObservers() {
@@ -54,6 +57,19 @@ class GroupFragment : Fragment() {
             val bundle = Bundle()
             bundle.putParcelable(AppConstants.GROUP_DATA, it)
             findNavController().navigate(R.id.nav_view_group, bundle)
+        }
+
+        groupViewModel.registerRes.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                }
+                Status.ERROR -> {
+                    Log.d(TAG, "okhttp Error")
+                }
+                Status.LOADING -> {
+                    Log.d(TAG, "okhttp LOADING")
+                }
+            }
         }
     }
 

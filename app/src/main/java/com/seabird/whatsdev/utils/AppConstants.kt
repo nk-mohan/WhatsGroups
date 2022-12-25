@@ -1,6 +1,10 @@
 package com.seabird.whatsdev.utils
 
 object AppConstants {
+    const val ACCESS_TOKEN = "access_token"
+    const val REFRESH_TOKEN = "refresh_token"
+    const val IS_REGISTERED = "is_registered"
+    const val DEVICE_ID = "device_id"
     const val EMPTY_STRING = ""
     const val APP_NAME = "#WhatsGroup"
     const val MEDIA_POSITION = "media_position"
@@ -11,4 +15,6 @@ object AppConstants {
 
     const val SHARED_PREFERENCE_STORAGE_NAME = "bluetooth_speaker"
     const val STORAGE_PERMISSION_ASKED = "storage_permission_asked_before"
+
+    const val BASE_URL = "https://nkzerocool.com/api/v1/"
 }
