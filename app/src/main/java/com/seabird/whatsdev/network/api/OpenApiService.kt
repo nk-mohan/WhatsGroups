@@ -1,14 +1,11 @@
 package com.seabird.whatsdev.network.api
 
-import com.seabird.whatsdev.network.model.LoginRequest
-import com.seabird.whatsdev.network.model.LoginResponse
-import com.seabird.whatsdev.network.model.RegisterRequest
-import com.seabird.whatsdev.network.model.RegisterResponse
+import com.seabird.whatsdev.network.model.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface ApiService {
+interface OpenApiService {
 
     @POST("auth/register")
     suspend fun registerUser(@Body registerRequest: RegisterRequest): Response<RegisterResponse>

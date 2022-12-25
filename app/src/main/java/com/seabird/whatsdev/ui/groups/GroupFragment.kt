@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.R
@@ -17,7 +16,6 @@ import com.seabird.whatsdev.databinding.FragmentGroupBinding
 import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.AppConstants
-import com.seabird.whatsdev.utils.SharedPreferenceManager
 
 class GroupFragment : Fragment() {
 

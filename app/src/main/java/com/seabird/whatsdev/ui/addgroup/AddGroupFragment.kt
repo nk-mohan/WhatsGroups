@@ -1,14 +1,19 @@
 package com.seabird.whatsdev.ui.addgroup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.seabird.whatsdev.R
+import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.databinding.FragmentAddGroupBinding
+import com.seabird.whatsdev.network.model.AddGroupRequest
+import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.MainActivity
 
@@ -19,6 +24,8 @@ class AddGroupFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val addGroupViewModel: AddGroupViewModel by activityViewModels()
 
     private var selectedPosition = 0
 
@@ -44,6 +51,20 @@ class AddGroupFragment : Fragment() {
         binding.addGroup.setSafeOnClickListener {
             validateAndCreateGroup()
         }
+
+        addGroupViewModel.addGroupRes.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), getString(R.string.group_added), Toast.LENGTH_SHORT).show()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> {
+                    Log.d(TAG, "okhttp LOADING")
+                }
+            }
+        }
     }
 
     private fun setUpSpinnerView() {
@@ -63,7 +84,12 @@ class AddGroupFragment : Fragment() {
         } else if (binding.groupDescriptionEditText.text.toString().isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.validation_group_description), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(requireContext(), getString(R.string.group_added), Toast.LENGTH_SHORT).show()
+            addGroupViewModel.addGroup(AddGroupRequest(
+                binding.groupNameEditText.text.toString(),
+                binding.groupDescriptionEditText.text.toString(),
+                binding.groupLinkEditText.text.toString(),
+                categories[selectedPosition]
+            ))
         }
     }
 
