@@ -15,6 +15,7 @@
     <color name="color_transparent">#00000000</color>
     <color name="category_shape_shadow">#6B000000</color>
     <color name="selected_shape_shadow">#B3000000</color>
+    <color name="loader_background_shadow">#99D5D9DC</color>
 
     <color name="divider_color">#E2E2E2</color>
     <color name="favourite_color">#D31A38</color>

@@ -94,4 +94,8 @@
     <string name="more_apps_desc">Check More Apps Created by Us.</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="version_name">Version %s</string>
+    <string name="group_link_already_exists">Group link is already exists</string>
+    <string name="authorization_error">Authorization error</string>
+    <string name="server_error">Server error, Please try again</string>
+    <string name="group_link_not_valid">Group Link is not valid</string>
 </resources>

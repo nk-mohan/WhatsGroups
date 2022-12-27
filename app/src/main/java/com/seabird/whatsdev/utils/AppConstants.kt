@@ -1,6 +1,7 @@
 package com.seabird.whatsdev.utils
 
 object AppConstants {
+    const val SERVER_GROUP_LINK_NOT_VALID = "Group Link is not valid."
     const val ACCESS_TOKEN = "access_token"
     const val REFRESH_TOKEN = "refresh_token"
     const val IS_REGISTERED = "is_registered"
