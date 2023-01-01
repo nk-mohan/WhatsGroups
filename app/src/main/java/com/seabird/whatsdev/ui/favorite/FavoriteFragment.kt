@@ -43,13 +43,13 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setObservers() {
-        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
-            groupsAdapter.notifyItemInserted(it)
-        }
+//        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
+//            groupsAdapter.notifyItemInserted(it)
+//        }
     }
 
     private fun initViews() {
-        binding.emptyList.textEmptyView.text = "Group list not loaded"
+        binding.emptyList.textContent.text = "Group list not loaded"
         binding.rvGroupList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
                 isSmoothScrollbarEnabled = true

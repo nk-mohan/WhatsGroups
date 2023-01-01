@@ -76,7 +76,7 @@
         tools:layout="@layout/fragment_view_group" >
         <argument
             android:name="group_data"
-            app:argType="com.seabird.whatsdev.network.model.GroupData" />
+            app:argType="com.seabird.whatsdev.network.model.GroupResponse" />
     </fragment>
 
     <fragment

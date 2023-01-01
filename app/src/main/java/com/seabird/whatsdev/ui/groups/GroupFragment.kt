@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.databinding.FragmentGroupBinding
+import com.seabird.whatsdev.isInternetAvailable
 import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.ui.MainActivity
+import com.seabird.whatsdev.ui.views.CustomRecyclerView
 import com.seabird.whatsdev.utils.AppConstants
 
 class GroupFragment : Fragment() {
@@ -47,8 +50,26 @@ class GroupFragment : Fragment() {
     }
 
     private fun setObservers() {
-        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
-            groupsAdapter.notifyItemInserted(it)
+        groupViewModel.notifyNewGroupsInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsAdapter.notifyItemRangeInserted(it.first, it.second)
+        }
+
+        groupViewModel.addLoader.observe(viewLifecycleOwner) {
+            if (it) {
+                groupsAdapter.addLoadingFooter()
+                binding.rvGroupList.setEmptyView(binding.emptyList.textEmptyView)
+            }
+        }
+
+        groupViewModel.removeLoader.observe(viewLifecycleOwner) {
+            if (it)
+                groupsAdapter.removeLoadingFooter()
+        }
+
+        groupViewModel.fetchingError.observe(viewLifecycleOwner) {
+            if (it) {
+               showLoadGroupsError()
+            }
         }
 
         groupsAdapter.setItemClickListener {
@@ -60,27 +81,65 @@ class GroupFragment : Fragment() {
         groupViewModel.registerRes.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
+                    groupViewModel.addLoaderToTheList()
+                    groupViewModel.getGroupList()
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "okhttp Error")
+                    showLoadGroupsError()
+                    binding.rvGroupList.setEmptyView(binding.emptyList.textEmptyView)
                 }
                 Status.LOADING -> {
                     Log.d(TAG, "okhttp LOADING")
+                    binding.rvGroupList.setEmptyView(null)
                 }
             }
         }
     }
 
+    private fun showLoadGroupsError() {
+        if (requireContext().isInternetAvailable())
+            binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
+        else binding.emptyList.textContent.text = getString(R.string.internet_not_available)
+
+        if (groupViewModel.groups.size > 1)
+            Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+    }
+
     private fun initViews() {
         (activity as MainActivity).showAddGroupAction()
-        binding.emptyList.textEmptyView.text = "Group list not loaded"
+        binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
         binding.rvGroupList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
                 isSmoothScrollbarEnabled = true
             }
             adapter = groupsAdapter
-            setEmptyView(binding.emptyList.textEmptyView)
+            setScrollListener(this, layoutManager as LinearLayoutManager)
         }
+
+        binding.emptyList.retry.setOnClickListener {
+            if (requireContext().isInternetAvailable())
+                groupViewModel.checkAndRegister()
+        }
+    }
+
+    private fun setScrollListener(
+        recyclerView: CustomRecyclerView,
+        layoutManager: LinearLayoutManager
+    ) {
+        recyclerView.addOnScrollListener(object : PaginationScrollListener(layoutManager){
+            override fun loadMoreItems() {
+                groupViewModel.getGroupList()
+            }
+
+            override fun isLastPage(): Boolean {
+                return groupViewModel.lastPageFetched()
+            }
+
+            override fun isFetching(): Boolean {
+                return groupViewModel.getUserListFetching()
+            }
+        })
     }
 
     override fun onDestroyView() {

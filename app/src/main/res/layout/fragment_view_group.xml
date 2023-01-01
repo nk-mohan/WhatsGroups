@@ -7,7 +7,7 @@
 
         <variable
             name="groupData"
-            type="com.seabird.whatsdev.network.model.GroupData" />
+            type="com.seabird.whatsdev.network.model.GroupResponse" />
     </data>
 
     <ScrollView
@@ -36,7 +36,7 @@
                     android:layout_height="@dimen/dimen_50"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:loadImageInGlide="@{groupData.groupDescription}" />
+                    app:loadImageInGlide="@{groupData.description}" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -56,14 +56,14 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="@{groupData.groupName}" />
+                        android:text="@{groupData.title}" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/group_category_text_view"
                         style="@style/TextSubDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{groupData.groupCategory}"
+                        android:text="@{groupData.category}"
                         android:textColor="@color/purple_200" />
 
                 </LinearLayout>
@@ -86,7 +86,7 @@
                     android:drawablePadding="@dimen/dimen_5"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{String.valueOf(groupData.viewsCount)}"
+                    android:text="@{String.valueOf(groupData.views_count)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -124,7 +124,7 @@
                 android:paddingTop="@dimen/dimen_10"
                 android:paddingEnd="@dimen/dimen_20"
                 android:paddingBottom="@dimen/dimen_10"
-                android:text="@string/group_desc"
+                android:text="@{groupData.description}"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_20"
                 android:layout_marginEnd="@dimen/dimen_20"
-                android:text="@string/group_join_link"
+                android:text="@{groupData.link}"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/image_group_link"
                 app:layout_constraintEnd_toEndOf="parent"

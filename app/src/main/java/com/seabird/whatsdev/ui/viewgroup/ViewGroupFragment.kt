@@ -1,5 +1,6 @@
 package com.seabird.whatsdev.ui.viewgroup
 
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
@@ -12,11 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentViewGroupBinding
-import com.seabird.whatsdev.network.model.GroupData
+import com.seabird.whatsdev.network.model.GroupResponse
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.utils.AppConstants
+import com.seabird.whatsdev.viewmodels.ViewGroupViewModel
 
 
 class ViewGroupFragment : Fragment() {
@@ -26,6 +29,8 @@ class ViewGroupFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val viewGroupViewModel: ViewGroupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +43,14 @@ class ViewGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val groupData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(AppConstants.GROUP_DATA, GroupData::class.java)
+            arguments?.getParcelable(AppConstants.GROUP_DATA, GroupResponse::class.java)
         } else {
-            arguments?.getParcelable(AppConstants.GROUP_DATA) as GroupData?
+            arguments?.getParcelable(AppConstants.GROUP_DATA) as GroupResponse?
         }
 
         groupData?.let {
             binding.groupData = groupData
+            viewGroupViewModel.updateViewedStatus(groupData.id)
         }
 
         setObservers()
@@ -52,11 +58,17 @@ class ViewGroupFragment : Fragment() {
 
     private fun setObservers() {
         binding.viewJoinNow.setSafeOnClickListener {
-            val intentWhatsAppGroup = Intent(Intent.ACTION_VIEW)
-            val uri: Uri = Uri.parse(binding.groupLinkTextView.text.toString())
-            intentWhatsAppGroup.data = uri
-            intentWhatsAppGroup.setPackage("com.whatsapp")
-            startActivity(intentWhatsAppGroup)
+            try {
+                val intentWhatsAppGroup = Intent(Intent.ACTION_VIEW)
+                val uri: Uri = Uri.parse(binding.groupLinkTextView.text.toString())
+                intentWhatsAppGroup.data = uri
+                intentWhatsAppGroup.setPackage("com.whatsapp")
+                startActivity(intentWhatsAppGroup)
+            } catch (e: ActivityNotFoundException){
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "WhatsApp Not Installed",Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.favorite.setSafeOnClickListener {

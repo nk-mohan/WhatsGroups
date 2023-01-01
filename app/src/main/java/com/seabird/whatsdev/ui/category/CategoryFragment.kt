@@ -50,7 +50,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.emptyList.textEmptyView.text = "Category list not loaded"
+        binding.emptyList.textContent.text = "Category list not loaded"
         binding.rvCategoryList.apply {
             layoutManager = GridLayoutManager(requireContext(), 2).apply {
                 isSmoothScrollbarEnabled = true

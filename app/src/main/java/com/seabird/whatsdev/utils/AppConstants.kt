@@ -18,4 +18,7 @@ object AppConstants {
     const val STORAGE_PERMISSION_ASKED = "storage_permission_asked_before"
 
     const val BASE_URL = "https://nkzerocool.com/api/v1/"
+
+    const val LOADING = 0
+    const val ITEM = 1
 }

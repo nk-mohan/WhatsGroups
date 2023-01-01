@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.RowGroupItemBinding
-import com.seabird.whatsdev.network.model.GroupData
+import com.seabird.whatsdev.network.model.GroupResponse
 import com.seabird.whatsdev.setSafeOnClickListener
 
 class GroupsViewHolder(private var viewBinding: RowGroupItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(groupData: GroupData, onItemClicked: (GroupData) -> Unit) {
+    fun bindValues(groupData: GroupResponse, onItemClicked: (GroupResponse) -> Unit) {
         viewBinding.groupData = groupData
 
         viewBinding.favorite.setSafeOnClickListener {

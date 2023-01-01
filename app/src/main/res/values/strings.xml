@@ -98,4 +98,7 @@
     <string name="authorization_error">Authorization error</string>
     <string name="server_error">Server error, Please try again</string>
     <string name="group_link_not_valid">Group Link is not valid</string>
+    <string name="retry">Retry</string>
+    <string name="internet_not_available">Please check your internet connection.</string>
+    <string name="group_list_not_loaded">Group list not loaded</string>
 </resources>

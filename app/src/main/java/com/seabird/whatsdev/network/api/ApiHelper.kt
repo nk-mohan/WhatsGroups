@@ -8,5 +8,8 @@ interface ApiHelper {
     suspend fun registerUser(registerRequest: RegisterRequest): Response<RegisterResponse>
     suspend fun loginUser(loginRequest: LoginRequest): Response<LoginResponse>
     suspend fun addGroup(addGroupRequest: AddGroupRequest): Response<AddGroupResponse>
+    suspend fun getRecentGroups(pageNumber: Int, perPageResult: Int): Response<GroupListResponse>
+    suspend fun getTrendingGroups(pageNumber: Int, perPageResult: Int): Response<GroupListResponse>
+    suspend fun updateViewedGroupStatus(id: String): Response<UpdateViewedGroupResponse>
 
 }

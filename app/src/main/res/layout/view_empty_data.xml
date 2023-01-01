@@ -1,14 +1,47 @@
-<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/text_empty_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/TextSubTitle"
-    android:layout_marginTop="@dimen/dimen_200"
-    android:gravity="center"
-    android:padding="@dimen/dimen_10"
-    android:textColor="@android:color/darker_gray"
-    android:textSize="@dimen/text_18"
+    android:layout_height="match_parent"
     android:visibility="gone">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/text_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_internet_not_available" />
 
-</androidx.appcompat.widget.AppCompatTextView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_content"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/retry"
+        style="@style/TextSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_35"
+        android:background="@drawable/ic_view_status_background"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingTop="@dimen/dimen_10"
+        android:paddingEnd="@dimen/dimen_20"
+        android:paddingBottom="@dimen/dimen_10"
+        android:text="@string/retry"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_content" />
+</androidx.constraintlayout.widget.ConstraintLayout>

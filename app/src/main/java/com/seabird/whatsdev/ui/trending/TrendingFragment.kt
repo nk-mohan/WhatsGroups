@@ -5,13 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentTrendingBinding
+import com.seabird.whatsdev.isInternetAvailable
 import com.seabird.whatsdev.ui.MainActivity
-import com.seabird.whatsdev.ui.groups.GroupViewModel
 import com.seabird.whatsdev.ui.groups.GroupsAdapter
+import com.seabird.whatsdev.ui.groups.PaginationScrollListener
+import com.seabird.whatsdev.ui.views.CustomRecyclerView
+import com.seabird.whatsdev.utils.AppConstants
+import com.seabird.whatsdev.viewmodels.TrendingViewModel
 
 class TrendingFragment : Fragment() {
 
@@ -19,7 +26,7 @@ class TrendingFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val groupViewModel by activityViewModels<GroupViewModel>()
+    private val groupViewModel by activityViewModels<TrendingViewModel>()
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf()) }
 
@@ -29,7 +36,6 @@ class TrendingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         (activity as AppCompatActivity?)?.supportActionBar?.show()
-        (activity as MainActivity).showAddGroupAction()
         _binding = FragmentTrendingBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,25 +45,80 @@ class TrendingFragment : Fragment() {
         initViews()
         setObservers()
         groupsAdapter.groupList = groupViewModel.groups
-        groupViewModel.getGroupList()
     }
 
     private fun setObservers() {
-        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
-            groupsAdapter.notifyItemInserted(it)
+        groupViewModel.notifyNewGroupsInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsAdapter.notifyItemRangeInserted(it.first, it.second)
+        }
+
+        groupViewModel.addLoader.observe(viewLifecycleOwner) {
+            if (it) {
+                groupsAdapter.addLoadingFooter()
+                binding.rvGroupList.setEmptyView(binding.emptyList.textEmptyView)
+            }
+        }
+
+        groupViewModel.removeLoader.observe(viewLifecycleOwner) {
+            if (it)
+                groupsAdapter.removeLoadingFooter()
+        }
+
+        groupViewModel.fetchingError.observe(viewLifecycleOwner) {
+            if (it) {
+                showLoadGroupsError()
+            }
+        }
+
+        groupsAdapter.setItemClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(AppConstants.GROUP_DATA, it)
+            findNavController().navigate(R.id.nav_view_group, bundle)
         }
     }
 
+    private fun showLoadGroupsError() {
+        if (requireContext().isInternetAvailable())
+            binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
+        else binding.emptyList.textContent.text = getString(R.string.internet_not_available)
+
+        if (groupViewModel.groups.size > 1)
+            Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+    }
+
     private fun initViews() {
-        binding.emptyList.textEmptyView.text = "Group list not loaded"
+        (activity as MainActivity).showAddGroupAction()
+        binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
         binding.rvGroupList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
                 isSmoothScrollbarEnabled = true
             }
             adapter = groupsAdapter
-            setEmptyView(binding.emptyList.textEmptyView)
+            setScrollListener(this, layoutManager as LinearLayoutManager)
         }
     }
+
+    private fun setScrollListener(
+        recyclerView: CustomRecyclerView,
+        layoutManager: LinearLayoutManager
+    ) {
+        recyclerView.addOnScrollListener(object : PaginationScrollListener(layoutManager){
+            override fun loadMoreItems() {
+                groupViewModel.getGroupList()
+            }
+
+            override fun isLastPage(): Boolean {
+                return groupViewModel.lastPageFetched()
+            }
+
+            override fun isFetching(): Boolean {
+                return groupViewModel.getUserListFetching()
+            }
+        })
+        groupViewModel.addLoaderToTheList()
+        groupViewModel.getGroupList()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
