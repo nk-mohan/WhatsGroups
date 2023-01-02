@@ -7,6 +7,7 @@ import android.os.Environment
 import android.util.DisplayMetrics
 import android.view.inputmethod.InputMethodManager
 import com.seabird.whatsdev.R
+import com.seabird.whatsdev.isInternetAvailable
 import java.io.File
 import java.io.IOException
 
@@ -75,7 +76,10 @@ object AppUtils {
             AppConstants.SERVER_GROUP_LINK_NOT_VALID -> context.getString(R.string.group_link_not_valid)
             else -> when(errorCode) {
                 401 -> context.getString(R.string.authorization_error)
-                else -> context.getString(R.string.server_error)
+                else -> if (!context.isInternetAvailable())
+                    context.getString(R.string.internet_not_available)
+                else
+                    context.getString(R.string.server_error)
             }
         }
     }

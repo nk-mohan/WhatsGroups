@@ -78,6 +78,14 @@ class GroupFragment : Fragment() {
             findNavController().navigate(R.id.nav_view_group, bundle)
         }
 
+        binding.emptyList.retry.setOnClickListener {
+            if (requireContext().isInternetAvailable()) {
+                groupViewModel.addLoaderToTheList()
+                groupViewModel.getGroupList()
+            } else
+                Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+        }
+
         groupViewModel.registerRes.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {

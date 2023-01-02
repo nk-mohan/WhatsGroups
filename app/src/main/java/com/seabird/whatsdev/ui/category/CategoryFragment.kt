@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentCategoryBinding
+import com.seabird.whatsdev.isInternetAvailable
 import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.ui.views.SpacesItemDecoration
@@ -71,10 +72,12 @@ class CategoryFragment : Fragment() {
                         binding.shimmerLayout.visibility = View.GONE
                         binding.rvCategoryList.setEmptyView(binding.emptyList.textEmptyView)
                         Toast.makeText(requireContext(), AppUtils.getErrorCode(it.code, it.message, requireContext()), Toast.LENGTH_SHORT).show()
+                        showCategoryError()
                     }
                     Status.LOADING -> {
                         binding.shimmerLayout.startShimmer()
                         binding.shimmerLayout.visibility = View.VISIBLE
+                        binding.emptyList.textEmptyView.visibility = View.GONE
                     }
                 }
             }
@@ -85,10 +88,23 @@ class CategoryFragment : Fragment() {
             bundle.putString(AppConstants.CATEGORY_NAME, it.category_name)
             findNavController().navigate(R.id.nav_category_group, bundle)
         }
+
+        binding.emptyList.retry.setOnClickListener {
+            if (requireContext().isInternetAvailable()) {
+                categoryViewModel.getCategoryList()
+            } else
+                Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showCategoryError() {
+        if (requireContext().isInternetAvailable())
+            binding.emptyList.textContent.text = getString(R.string.category_list_not_loaded)
+        else binding.emptyList.textContent.text = getString(R.string.internet_not_available)
     }
 
     private fun initViews() {
-        binding.emptyList.textContent.text = "Category list not loaded"
+        binding.emptyList.textContent.text = getString(R.string.category_list_not_loaded)
         binding.rvCategoryList.apply {
             layoutManager = GridLayoutManager(requireContext(), 2).apply {
                 isSmoothScrollbarEnabled = true

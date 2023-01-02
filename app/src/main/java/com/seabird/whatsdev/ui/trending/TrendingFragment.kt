@@ -75,6 +75,14 @@ class TrendingFragment : Fragment() {
             bundle.putParcelable(AppConstants.GROUP_DATA, it)
             findNavController().navigate(R.id.nav_view_group, bundle)
         }
+
+        binding.emptyList.retry.setOnClickListener {
+            if (requireContext().isInternetAvailable()) {
+                groupViewModel.addLoaderToTheList()
+                groupViewModel.getGroupList()
+            } else
+                Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showLoadGroupsError() {
