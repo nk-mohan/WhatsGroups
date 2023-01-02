@@ -16,6 +16,8 @@ class ApiHelperImpl @Inject constructor(private val openApiService: OpenApiServi
 
     override suspend fun getTrendingGroups(pageNumber: Int, perPageResult: Int): Response<GroupListResponse> = authApiService.getTrendingGroups(pageNumber, perPageResult)
 
+    override suspend fun getCategoryGroups(pageNumber: Int, perPageResult: Int, categoryName: String): Response<GroupListResponse> = authApiService.getCategoryGroups(categoryName, pageNumber, perPageResult)
+
     override suspend fun updateViewedGroupStatus(id: String): Response<UpdateViewedGroupResponse> = authApiService.updateViewedGroupStatus(id)
 
     override suspend fun reportGroup(id: String): Response<UpdateViewedGroupResponse> = authApiService.reportGroup(id)

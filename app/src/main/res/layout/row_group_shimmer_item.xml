@@ -31,6 +31,30 @@
                 android:id="@+id/item3"
                 layout="@layout/group_shimmer_item" />
 
+            <include
+                android:id="@+id/item4"
+                layout="@layout/group_shimmer_item" />
+
+            <include
+                android:id="@+id/item5"
+                layout="@layout/group_shimmer_item" />
+
+            <include
+                android:id="@+id/item6"
+                layout="@layout/group_shimmer_item" />
+
+            <include
+                android:id="@+id/item7"
+                layout="@layout/group_shimmer_item" />
+
+            <include
+                android:id="@+id/item8"
+                layout="@layout/group_shimmer_item" />
+
+            <include
+                android:id="@+id/item9"
+                layout="@layout/group_shimmer_item" />
+
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>

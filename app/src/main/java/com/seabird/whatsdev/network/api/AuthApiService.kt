@@ -24,4 +24,7 @@ interface AuthApiService {
     @GET("whatsgroups/categories")
     suspend fun getCategoryList(): Response<CategoryListResponse>
 
+    @GET("whatsgroups/category/{category_name}")
+    suspend fun getCategoryGroups(@Path("category_name") category_name: String, @Query("page") page:Int, @Query("per_page") per_page:Int): Response<GroupListResponse>
+
 }

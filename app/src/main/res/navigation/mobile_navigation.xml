@@ -80,6 +80,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_category_group"
+        android:name="com.seabird.whatsdev.ui.category.CategoryGroupFragment"
+        android:label="@string/action_view_group"
+        tools:layout="@layout/fragment_category_group" >
+        <argument
+            android:name="category_name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_settings"
         android:name="com.seabird.whatsdev.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"

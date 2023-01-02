@@ -12,10 +12,18 @@ class CategoryAdapter(var categoryList: MutableList<CategoryModel>) : RecyclerVi
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val categoryData = categoryList[position]
-        holder.bindValues(categoryData)
+        holder.bindValues(categoryData, onItemClicked)
     }
 
     override fun getItemCount(): Int {
         return categoryList.size
+    }
+
+    fun setItemClickListener(fn: (CategoryModel) -> Unit) {
+        onItemClicked = fn
+    }
+
+    companion object {
+        lateinit var onItemClicked: (CategoryModel) -> Unit
     }
 }

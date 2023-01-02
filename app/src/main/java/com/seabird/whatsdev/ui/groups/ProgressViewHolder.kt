@@ -12,9 +12,21 @@ class ProgressViewHolder(private var viewBinding: RowGroupShimmerItemBinding) : 
         if (isInitialLoader) {
             viewBinding.item2.rootLayout.visibility = View.VISIBLE
             viewBinding.item3.rootLayout.visibility = View.VISIBLE
+            viewBinding.item4.rootLayout.visibility = View.VISIBLE
+            viewBinding.item5.rootLayout.visibility = View.VISIBLE
+            viewBinding.item6.rootLayout.visibility = View.VISIBLE
+            viewBinding.item7.rootLayout.visibility = View.VISIBLE
+            viewBinding.item8.rootLayout.visibility = View.VISIBLE
+            viewBinding.item9.rootLayout.visibility = View.VISIBLE
         } else {
             viewBinding.item2.rootLayout.visibility = View.GONE
             viewBinding.item3.rootLayout.visibility = View.GONE
+            viewBinding.item4.rootLayout.visibility = View.GONE
+            viewBinding.item5.rootLayout.visibility = View.GONE
+            viewBinding.item6.rootLayout.visibility = View.GONE
+            viewBinding.item7.rootLayout.visibility = View.GONE
+            viewBinding.item8.rootLayout.visibility = View.GONE
+            viewBinding.item9.rootLayout.visibility = View.GONE
         }
         viewBinding.shimmerLayout.startShimmer()
     }

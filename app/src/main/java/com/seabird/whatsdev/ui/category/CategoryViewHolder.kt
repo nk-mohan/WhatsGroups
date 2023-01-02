@@ -5,11 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowCategoryItemBinding
 import com.seabird.whatsdev.network.model.CategoryModel
+import com.seabird.whatsdev.setSafeOnClickListener
 
 class CategoryViewHolder(private val viewBinding: RowCategoryItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(categoryData: CategoryModel) {
+    fun bindValues(categoryData: CategoryModel, onItemClicked: (CategoryModel) -> Unit) {
         viewBinding.categoryData = categoryData
+
+        viewBinding.rootLayout.setSafeOnClickListener {
+            onItemClicked(categoryData)
+        }
     }
 
     companion object {
