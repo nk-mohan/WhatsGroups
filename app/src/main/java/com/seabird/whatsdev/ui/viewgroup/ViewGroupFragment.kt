@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentViewGroupBinding
-import com.seabird.whatsdev.network.model.GroupResponse
+import com.seabird.whatsdev.network.model.GroupModel
+import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.utils.AppConstants
+import com.seabird.whatsdev.utils.AppUtils
 import com.seabird.whatsdev.viewmodels.ViewGroupViewModel
 
 
@@ -32,6 +34,8 @@ class ViewGroupFragment : Fragment() {
 
     private val viewGroupViewModel: ViewGroupViewModel by activityViewModels()
 
+    var groupData: GroupModel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,21 +46,42 @@ class ViewGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val groupData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(AppConstants.GROUP_DATA, GroupResponse::class.java)
+        groupData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable(AppConstants.GROUP_DATA, GroupModel::class.java)
         } else {
-            arguments?.getParcelable(AppConstants.GROUP_DATA) as GroupResponse?
+            arguments?.getParcelable(AppConstants.GROUP_DATA) as GroupModel?
         }
 
         groupData?.let {
             binding.groupData = groupData
-            viewGroupViewModel.updateViewedStatus(groupData.id)
+            viewGroupViewModel.updateViewedStatus(groupData!!.id)
         }
 
         setObservers()
     }
 
     private fun setObservers() {
+
+        viewGroupViewModel.reportRes.observe(viewLifecycleOwner) {
+            it?.let {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        viewGroupViewModel.resetReportStatus()
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), getString(R.string.group_reported), Toast.LENGTH_SHORT).show()
+                    }
+                    Status.ERROR -> {
+                        viewGroupViewModel.resetReportStatus()
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), AppUtils.getErrorCode(it.code, it.message, requireContext()), Toast.LENGTH_SHORT).show()
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
         binding.viewJoinNow.setSafeOnClickListener {
             try {
                 val intentWhatsAppGroup = Intent(Intent.ACTION_VIEW)
@@ -88,6 +113,12 @@ class ViewGroupFragment : Fragment() {
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, binding.groupLinkTextView.text.toString())
             startActivity(Intent.createChooser(intent, "Share via"))
+        }
+
+        binding.viewReportGroup.setSafeOnClickListener {
+            groupData?.let {
+                viewGroupViewModel.reportGroup(groupData!!.id)
+            }
         }
     }
 }

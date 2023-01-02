@@ -14,4 +14,6 @@ class AppRepository @Inject constructor(private val apiHelper: ApiHelper) {
     suspend fun getRecentGroups(pageNumber: Int, perPageResult: Int) = apiHelper.getRecentGroups(pageNumber, perPageResult)
     suspend fun getTrendingGroups(pageNumber: Int, perPageResult: Int) = apiHelper.getTrendingGroups(pageNumber, perPageResult)
     suspend fun updateViewedGroupStatus(id: String) = apiHelper.updateViewedGroupStatus(id)
+    suspend fun reportGroup(id: String) = apiHelper.reportGroup(id)
+    suspend fun getCategoryList() = apiHelper.getCategoryList()
 }

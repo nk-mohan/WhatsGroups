@@ -49,6 +49,7 @@
     <string name="downloading_count">"%d/%d"</string>
 
     <string name="join_group">Join Group</string>
+    <string name="report_group">Report Group</string>
 
     <string name="add_group_description_label">Below groups will be shown under the selected category.</string>
 
@@ -83,6 +84,7 @@
     <string name="validation_group_link">Please Enter group link</string>
     <string name="validation_group_description">Please Enter group description</string>
     <string name="group_added">Group Added</string>
+    <string name="group_reported">This group successfully reported. Will take appropriate action</string>
 
     <string name="description">Description</string>
     <string name="group_desc">This group used to share updates about current market status and provide valuable information about stocks which are trading lower price or stocks having high potential to reach high. Please join with us for further updates.</string>

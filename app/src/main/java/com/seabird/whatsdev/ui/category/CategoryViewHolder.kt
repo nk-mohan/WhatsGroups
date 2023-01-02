@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowCategoryItemBinding
-import com.seabird.whatsdev.network.model.CategoryData
+import com.seabird.whatsdev.network.model.CategoryModel
 
 class CategoryViewHolder(private val viewBinding: RowCategoryItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(categoryData: CategoryData) {
+    fun bindValues(categoryData: CategoryModel) {
         viewBinding.categoryData = categoryData
     }
 

@@ -44,8 +44,8 @@ class CategoryFragment : Fragment() {
     }
 
     private fun setObservers() {
-        categoryViewModel.notifyNewCategoryInsertedLiveData.observe(viewLifecycleOwner) {
-            categoryAdapter.notifyItemInserted(it)
+        categoryViewModel.notifyNewCategoriesInsertedLiveData.observe(viewLifecycleOwner) {
+            categoryAdapter.notifyItemRangeInserted(it.first, it.second)
         }
     }
 

@@ -25,7 +25,7 @@ class GroupViewModel @Inject constructor(
     val registerRes : LiveData<Resource<RegisterResponse>>
         get() = _registerRes
 
-    var groups = mutableListOf<GroupResponse>()
+    var groups = mutableListOf<GroupModel>()
     val addLoader = MutableLiveData<Boolean>()
     val removeLoader = MutableLiveData<Boolean>()
     val fetchingError = MutableLiveData<Boolean>()

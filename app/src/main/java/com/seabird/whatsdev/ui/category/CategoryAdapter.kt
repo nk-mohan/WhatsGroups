@@ -2,9 +2,9 @@ package com.seabird.whatsdev.ui.category
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.seabird.whatsdev.network.model.CategoryData
+import com.seabird.whatsdev.network.model.CategoryModel
 
-class CategoryAdapter(var categoryList: MutableList<CategoryData>) : RecyclerView.Adapter<CategoryViewHolder>() {
+class CategoryAdapter(var categoryList: MutableList<CategoryModel>) : RecyclerView.Adapter<CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder.create(parent)

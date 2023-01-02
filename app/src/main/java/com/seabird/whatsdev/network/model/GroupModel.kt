@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.seabird.whatsdev.utils.AppConstants
 
-data class GroupResponse(val id: Int, val title: String, val category: String, val description: String, val created_at: String, val link: String, val views_count: Int, val report_count: Int) :
+data class GroupModel(val id: Int, val title: String, val category: String, val description: String, val created_at: String, val link: String, val views_count: Int, val report_count: Int) :
     Parcelable {
 
     constructor() : this(
@@ -36,12 +36,12 @@ data class GroupResponse(val id: Int, val title: String, val category: String, v
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<GroupResponse> {
-        override fun createFromParcel(parcel: Parcel): GroupResponse {
-            return GroupResponse(parcel)
+    companion object CREATOR : Parcelable.Creator<GroupModel> {
+        override fun createFromParcel(parcel: Parcel): GroupModel {
+            return GroupModel(parcel)
         }
 
-        override fun newArray(size: Int): Array<GroupResponse?> {
+        override fun newArray(size: Int): Array<GroupModel?> {
             return arrayOfNulls(size)
         }
     }

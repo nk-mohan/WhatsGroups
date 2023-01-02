@@ -5,7 +5,7 @@
 
         <variable
             name="categoryData"
-            type="com.seabird.whatsdev.network.model.CategoryData" />
+            type="com.seabird.whatsdev.network.model.CategoryModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:loadImageInGlide="@{categoryData.categoryImage}" />
+                app:loadImageInGlide="@{categoryData.category_link}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_10"
-                    android:text="@{categoryData.categoryName}"
+                    android:text="@{categoryData.category_name}"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />

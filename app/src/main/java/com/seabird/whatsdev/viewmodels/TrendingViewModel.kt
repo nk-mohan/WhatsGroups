@@ -3,7 +3,7 @@ package com.seabird.whatsdev.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seabird.whatsdev.network.model.GroupResponse
+import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ class TrendingViewModel @Inject constructor(
     private val appRepository: AppRepository
 ): ViewModel() {
 
-    var groups = mutableListOf<GroupResponse>()
+    var groups = mutableListOf<GroupModel>()
     val addLoader = MutableLiveData<Boolean>()
     val removeLoader = MutableLiveData<Boolean>()
     val fetchingError = MutableLiveData<Boolean>()

@@ -3,10 +3,10 @@ package com.seabird.whatsdev.ui.groups
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.isValidIndex
-import com.seabird.whatsdev.network.model.GroupResponse
+import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.utils.AppConstants
 
-class GroupsAdapter(var groupList: MutableList<GroupResponse>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupsAdapter(var groupList: MutableList<GroupModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoadingAdded = false
     private var loaderPosition = -1
@@ -34,14 +34,14 @@ class GroupsAdapter(var groupList: MutableList<GroupResponse>) : RecyclerView.Ad
         return if (groupList[position].title.isBlank()) AppConstants.LOADING else AppConstants.ITEM
     }
 
-    fun setItemClickListener(fn: (GroupResponse) -> Unit) {
+    fun setItemClickListener(fn: (GroupModel) -> Unit) {
         onItemClicked = fn
     }
 
     fun addLoadingFooter() {
         if (!isLoadingAdded) {
             isLoadingAdded = true
-            groupList.add(GroupResponse())
+            groupList.add(GroupModel())
             loaderPosition = groupList.size - 1
             notifyItemInserted(loaderPosition)
         }
@@ -59,6 +59,6 @@ class GroupsAdapter(var groupList: MutableList<GroupResponse>) : RecyclerView.Ad
     }
 
     companion object {
-        lateinit var onItemClicked: (GroupResponse) -> Unit
+        lateinit var onItemClicked: (GroupModel) -> Unit
     }
 }
