@@ -96,8 +96,13 @@ class ViewGroupFragment : Fragment() {
 
         }
 
+        updateFavouriteIcon()
+
         binding.favorite.setSafeOnClickListener {
-            binding.favorite.setImageResource(R.drawable.ic_favorite)
+            groupData?.let {
+                viewGroupViewModel.updateFavouriteItem(it)
+                updateFavouriteIcon()
+            }
         }
 
         binding.imageCopyGroupLink.setSafeOnClickListener {
@@ -119,6 +124,15 @@ class ViewGroupFragment : Fragment() {
             groupData?.let {
                 viewGroupViewModel.reportGroup(groupData!!.id)
             }
+        }
+    }
+
+    private fun updateFavouriteIcon() {
+        groupData?.let {
+            if (viewGroupViewModel.isFavouriteItem(it))
+                binding.favorite.setImageResource(R.drawable.ic_favorite)
+            else
+                binding.favorite.setImageResource(R.drawable.ic_not_favorite)
         }
     }
 }

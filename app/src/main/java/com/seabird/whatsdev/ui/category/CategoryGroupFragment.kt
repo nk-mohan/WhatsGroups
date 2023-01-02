@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentCategoryGroupBinding
 import com.seabird.whatsdev.isInternetAvailable
+import com.seabird.whatsdev.network.model.GroupModel
+import com.seabird.whatsdev.ui.GroupItemClickListener
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.ui.groups.GroupsAdapter
 import com.seabird.whatsdev.ui.groups.PaginationScrollListener
@@ -82,11 +84,22 @@ class CategoryGroupFragment : Fragment() {
             }
         }
 
-        groupsAdapter.setItemClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(AppConstants.GROUP_DATA, it)
-            findNavController().navigate(R.id.nav_view_group, bundle)
-        }
+        groupsAdapter.setItemClickListener(object : GroupItemClickListener{
+            override fun onGroupItemClicked(groupModel: GroupModel) {
+                val bundle = Bundle()
+                bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
+                findNavController().navigate(R.id.nav_view_group, bundle)
+            }
+
+            override fun onFavouriteItemClicked(position: Int, groupModel: GroupModel) {
+                groupViewModel.updateFavouriteItem(groupModel)
+                groupsAdapter.notifyItemChanged(position)
+            }
+
+            override fun isFavouriteItem(groupModel: GroupModel): Boolean {
+                return groupViewModel.isFavouriteItem(groupModel)
+            }
+        })
 
         binding.emptyList.retry.setOnClickListener {
             if (requireContext().isInternetAvailable()) {

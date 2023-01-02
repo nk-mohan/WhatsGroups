@@ -85,4 +85,11 @@ dependencies {
 
     implementation project(':zoomimageview')
     implementation project(':spinnerview')
+
+    //Room
+    //noinspection GradleDependency
+    implementation "androidx.room:room-runtime:2.3.0-alpha02"
+    kapt "androidx.room:room-compiler:2.3.0-alpha02"
+    //noinspection GradleDependency
+    implementation "androidx.room:room-ktx:2.3.0-alpha02"
 }

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seabird.whatsdev.TAG
+import com.seabird.whatsdev.db.GroupRepository
+import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.model.UpdateViewedGroupResponse
 import com.seabird.whatsdev.network.other.Resource
 import com.seabird.whatsdev.network.repository.AppRepository
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ViewGroupViewModel @Inject constructor(
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val groupRepository: GroupRepository
 ): ViewModel() {
 
     private val _reportRes = MutableLiveData<Resource<UpdateViewedGroupResponse>?>()
@@ -47,5 +50,18 @@ class ViewGroupViewModel @Inject constructor(
 
     fun resetReportStatus() {
         _reportRes.postValue(null)
+    }
+
+    fun updateFavouriteItem(groupModel: GroupModel) {
+        viewModelScope.launch {
+            if (isFavouriteItem(groupModel))
+                groupRepository.deleteGroup(groupModel.id)
+            else
+                groupRepository.insertGroup(groupModel)
+        }
+    }
+
+    fun isFavouriteItem(groupModel: GroupModel): Boolean {
+        return groupRepository.isFavoriteGroup(groupModel.id)
     }
 }

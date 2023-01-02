@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentFavoriteBinding
 import com.seabird.whatsdev.ui.MainActivity
-import com.seabird.whatsdev.ui.groups.GroupViewModel
 import com.seabird.whatsdev.ui.groups.GroupsAdapter
+import com.seabird.whatsdev.viewmodels.FavouriteGroupViewModel
 
 class FavoriteFragment : Fragment() {
 
@@ -19,9 +20,9 @@ class FavoriteFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val groupViewModel: GroupViewModel by activityViewModels()
+    private val groupViewModel: FavouriteGroupViewModel by activityViewModels()
 
-    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf()) }
+    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), true) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +44,13 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setObservers() {
-//        groupViewModel.notifyNewGroupInsertedLiveData.observe(viewLifecycleOwner) {
-//            groupsAdapter.notifyItemInserted(it)
-//        }
+        groupViewModel.notifyNewGroupsInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsAdapter.notifyItemRangeInserted(it.first, it.second)
+        }
     }
 
     private fun initViews() {
-        binding.emptyList.textContent.text = "Group list not loaded"
+        binding.emptyList.textContent.text = getString(R.string.favorite_list_not_loaded)
         binding.rvGroupList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
                 isSmoothScrollbarEnabled = true

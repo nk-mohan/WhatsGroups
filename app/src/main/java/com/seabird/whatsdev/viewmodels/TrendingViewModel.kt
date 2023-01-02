@@ -3,6 +3,7 @@ package com.seabird.whatsdev.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seabird.whatsdev.db.GroupRepository
 import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrendingViewModel @Inject constructor(
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val groupRepository: GroupRepository
 ): ViewModel() {
 
     var groups = mutableListOf<GroupModel>()
@@ -82,5 +84,18 @@ class TrendingViewModel @Inject constructor(
     }
 
     fun lastPageFetched() = currentPage >= totalPage
+
+    fun updateFavouriteItem(groupModel: GroupModel) {
+        viewModelScope.launch {
+            if (isFavouriteItem(groupModel))
+                groupRepository.deleteGroup(groupModel.id)
+            else
+                groupRepository.insertGroup(groupModel)
+        }
+    }
+
+    fun isFavouriteItem(groupModel: GroupModel): Boolean {
+        return groupRepository.isFavoriteGroup(groupModel.id)
+    }
 
 }

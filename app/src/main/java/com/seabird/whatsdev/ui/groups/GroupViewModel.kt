@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seabird.whatsdev.db.GroupRepository
 import com.seabird.whatsdev.network.model.*
 import com.seabird.whatsdev.network.other.Resource
 import com.seabird.whatsdev.network.repository.AppRepository
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupViewModel @Inject constructor(
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val groupRepository: GroupRepository
 ): ViewModel() {
 
     private val _registerRes = MutableLiveData<Resource<RegisterResponse>>()
@@ -140,4 +142,17 @@ class GroupViewModel @Inject constructor(
 
     fun lastPageFetched() = currentPage >= totalPage
 
+
+    fun updateFavouriteItem(groupModel: GroupModel) {
+        viewModelScope.launch {
+            if (isFavouriteItem(groupModel))
+                groupRepository.deleteGroup(groupModel.id)
+            else
+                groupRepository.insertGroup(groupModel)
+        }
+    }
+
+    fun isFavouriteItem(groupModel: GroupModel): Boolean {
+        return groupRepository.isFavoriteGroup(groupModel.id)
+    }
 }

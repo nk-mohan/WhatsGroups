@@ -103,6 +103,7 @@
     <string name="retry">Retry</string>
     <string name="internet_not_available">Please check your internet connection.</string>
     <string name="group_list_not_loaded">Group list not loaded</string>
+    <string name="favorite_list_not_loaded">You don\'t have any favorite groups</string>
     <string name="category_list_not_loaded">Category list not loaded</string>
     <string name="group_list_is_empty">Group list is empty</string>
 </resources>

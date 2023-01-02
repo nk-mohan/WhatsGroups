@@ -4,9 +4,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.isValidIndex
 import com.seabird.whatsdev.network.model.GroupModel
+import com.seabird.whatsdev.ui.GroupItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
-class GroupsAdapter(var groupList: MutableList<GroupModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoadingAdded = false
     private var loaderPosition = -1
@@ -20,7 +21,7 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val groupData = groupList[position]
         when (holder) {
-            is GroupsViewHolder -> holder.bindValues(groupData, onItemClicked)
+            is GroupsViewHolder -> holder.bindValues(groupData, position, isFromFavorite, onItemClickListener)
             is ProgressViewHolder -> holder.updateLoader(groupList.size <= 1)
         }
 
@@ -34,8 +35,8 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>) : RecyclerView.Adapt
         return if (groupList[position].title.isBlank()) AppConstants.LOADING else AppConstants.ITEM
     }
 
-    fun setItemClickListener(fn: (GroupModel) -> Unit) {
-        onItemClicked = fn
+    fun setItemClickListener(groupItemClickListener: GroupItemClickListener) {
+        onItemClickListener = groupItemClickListener
     }
 
     fun addLoadingFooter() {
@@ -59,6 +60,6 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>) : RecyclerView.Adapt
     }
 
     companion object {
-        lateinit var onItemClicked: (GroupModel) -> Unit
+        lateinit var onItemClickListener: GroupItemClickListener
     }
 }

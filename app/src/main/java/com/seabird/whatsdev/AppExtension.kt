@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
+import com.seabird.whatsdev.db.model.GroupDBModel
+import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.utils.SafeClickListener
 
 /**
@@ -39,4 +41,12 @@ fun Context.isInternetAvailable(): Boolean{
         activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
         else -> false
     }
+}
+
+fun GroupModel.convertToGroupDBModel() : GroupDBModel {
+    return GroupDBModel(id, title, description, category, link, views_count, report_count, created_at)
+}
+
+fun GroupDBModel.convertToGroupModel() : GroupModel {
+    return GroupModel(id, title, category, description, created_at, link, views_count, report_count)
 }
