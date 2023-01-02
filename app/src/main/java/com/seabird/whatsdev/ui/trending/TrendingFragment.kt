@@ -115,8 +115,10 @@ class TrendingFragment : Fragment() {
                 return groupViewModel.getUserListFetching()
             }
         })
-        groupViewModel.addLoaderToTheList()
-        groupViewModel.getGroupList()
+        if (groupViewModel.groups.isEmpty()) {
+            groupViewModel.addLoaderToTheList()
+            groupViewModel.getGroupList()
+        }
     }
 
 

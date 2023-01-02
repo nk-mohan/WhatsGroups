@@ -124,7 +124,7 @@ class CategoryGroupFragment : Fragment() {
                 return groupViewModel.getUserListFetching()
             }
         })
-        if (!groupViewModel.lastPageFetched()) {
+        if (groupViewModel.groups.isEmpty()) {
             groupViewModel.addLoaderToTheList()
             groupViewModel.getGroupList(categoryName)
         }

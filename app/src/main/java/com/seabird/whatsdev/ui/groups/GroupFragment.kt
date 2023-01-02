@@ -81,8 +81,10 @@ class GroupFragment : Fragment() {
         groupViewModel.registerRes.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    groupViewModel.addLoaderToTheList()
-                    groupViewModel.getGroupList()
+                    if (groupViewModel.groups.isEmpty()) {
+                        groupViewModel.addLoaderToTheList()
+                        groupViewModel.getGroupList()
+                    }
                 }
                 Status.ERROR -> {
                     Log.d(TAG, "okhttp Error")
