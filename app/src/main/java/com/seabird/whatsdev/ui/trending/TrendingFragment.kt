@@ -96,6 +96,14 @@ class TrendingFragment : Fragment() {
             } else
                 Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            groupViewModel.resetResult()
+            groupsAdapter.resetAdapter()
+            groupViewModel.addLoaderToTheList()
+            groupViewModel.getGroupList()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun showLoadGroupsError() {

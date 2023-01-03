@@ -99,6 +99,14 @@ class GroupFragment : Fragment() {
                 Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            groupViewModel.resetResult()
+            groupsAdapter.resetAdapter()
+            groupViewModel.addLoaderToTheList()
+            groupViewModel.getGroupList()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         groupViewModel.registerRes.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {

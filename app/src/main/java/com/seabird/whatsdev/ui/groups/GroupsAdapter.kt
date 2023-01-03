@@ -54,4 +54,10 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: 
             }
         }
     }
+
+    fun resetAdapter() {
+        isLoadingAdded = false
+        loaderPosition = -1
+        notifyDataSetChanged()
+    }
 }

@@ -155,4 +155,12 @@ class GroupViewModel @Inject constructor(
     fun isFavouriteItem(groupModel: GroupModel): Boolean {
         return groupRepository.isFavoriteGroup(groupModel.id)
     }
+
+    fun resetResult() {
+        isFetching = false
+        currentPage = 0
+        resultPerPage = 10
+        totalPage = 1
+        groups.clear()
+    }
 }

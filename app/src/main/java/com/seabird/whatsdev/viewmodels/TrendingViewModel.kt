@@ -98,4 +98,12 @@ class TrendingViewModel @Inject constructor(
         return groupRepository.isFavoriteGroup(groupModel.id)
     }
 
+    fun resetResult() {
+        isFetching = false
+        currentPage = 0
+        resultPerPage = 10
+        totalPage = 1
+        groups.clear()
+    }
+
 }

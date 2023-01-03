@@ -7,14 +7,20 @@
     android:background="@color/linen"
     tools:context=".ui.groups.GroupFragment">
 
-    <com.seabird.whatsdev.ui.views.CustomRecyclerView
-        android:id="@+id/rv_group_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/color_transparent"
-        android:footerDividersEnabled="true"
-        android:listSelector="@color/color_transparent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
+
+        <com.seabird.whatsdev.ui.views.CustomRecyclerView
+            android:id="@+id/rv_group_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/color_transparent"
+            android:footerDividersEnabled="true"
+            android:listSelector="@color/color_transparent"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/empty_list"
