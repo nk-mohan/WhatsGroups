@@ -7,21 +7,21 @@ import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.ui.GroupItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
-class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false, val clickListener: GroupItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoadingAdded = false
     private var loaderPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == AppConstants.ITEM) {
-            GroupsViewHolder.create(parent)
+            GroupsViewHolder.create(parent, clickListener)
         } else ProgressViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val groupData = groupList[position]
         when (holder) {
-            is GroupsViewHolder -> holder.bindValues(groupData, position, isFromFavorite, onItemClickListener)
+            is GroupsViewHolder -> holder.bindValues(groupData, position, isFromFavorite)
             is ProgressViewHolder -> holder.updateLoader(groupList.size <= 1)
         }
 
@@ -33,10 +33,6 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: 
 
     override fun getItemViewType(position: Int): Int {
         return if (groupList[position].title.isBlank()) AppConstants.LOADING else AppConstants.ITEM
-    }
-
-    fun setItemClickListener(groupItemClickListener: GroupItemClickListener) {
-        onItemClickListener = groupItemClickListener
     }
 
     fun addLoadingFooter() {
@@ -57,9 +53,5 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: 
                 loaderPosition = -1
             }
         }
-    }
-
-    companion object {
-        lateinit var onItemClickListener: GroupItemClickListener
     }
 }

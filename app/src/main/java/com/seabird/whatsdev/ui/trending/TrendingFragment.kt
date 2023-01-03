@@ -30,7 +30,24 @@ class TrendingFragment : Fragment() {
 
     private val groupViewModel by activityViewModels<TrendingViewModel>()
 
-    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf()) }
+    private val groupItemClickListener = object : GroupItemClickListener {
+        override fun onGroupItemClicked(groupModel: GroupModel) {
+            val bundle = Bundle()
+            bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
+            findNavController().navigate(R.id.nav_view_group, bundle)
+        }
+
+        override fun onFavouriteItemClicked(position: Int, groupModel: GroupModel) {
+            groupViewModel.updateFavouriteItem(groupModel)
+            groupsAdapter.notifyItemChanged(position)
+        }
+
+        override fun isFavouriteItem(groupModel: GroupModel): Boolean {
+            return groupViewModel.isFavouriteItem(groupModel)
+        }
+    }
+
+    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), clickListener = groupItemClickListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,23 +88,6 @@ class TrendingFragment : Fragment() {
                 showLoadGroupsError()
             }
         }
-
-        groupsAdapter.setItemClickListener(object : GroupItemClickListener {
-            override fun onGroupItemClicked(groupModel: GroupModel) {
-                val bundle = Bundle()
-                bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
-                findNavController().navigate(R.id.nav_view_group, bundle)
-            }
-
-            override fun onFavouriteItemClicked(position: Int, groupModel: GroupModel) {
-                groupViewModel.updateFavouriteItem(groupModel)
-                groupsAdapter.notifyItemChanged(position)
-            }
-
-            override fun isFavouriteItem(groupModel: GroupModel): Boolean {
-                return groupViewModel.isFavouriteItem(groupModel)
-            }
-        })
 
         binding.emptyList.retry.setOnClickListener {
             if (requireContext().isInternetAvailable()) {

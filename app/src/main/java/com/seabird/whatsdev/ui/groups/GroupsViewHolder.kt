@@ -10,9 +10,9 @@ import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.GroupItemClickListener
 
-class GroupsViewHolder(private var viewBinding: RowGroupItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
+class GroupsViewHolder(private var viewBinding: RowGroupItemBinding, private val groupItemClickListener: GroupItemClickListener) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(groupData: GroupModel, position: Int, isFromFavorite: Boolean, groupItemClickListener: GroupItemClickListener) {
+    fun bindValues(groupData: GroupModel, position: Int, isFromFavorite: Boolean) {
         viewBinding.groupData = groupData
 
         viewBinding.favorite.visibility = if (isFromFavorite) View.GONE else View.VISIBLE
@@ -29,9 +29,9 @@ class GroupsViewHolder(private var viewBinding: RowGroupItemBinding) : RecyclerV
     }
 
     companion object {
-        fun create(parent: ViewGroup): GroupsViewHolder {
+        fun create(parent: ViewGroup, groupItemClickListener: GroupItemClickListener): GroupsViewHolder {
             val binding = RowGroupItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return GroupsViewHolder(binding)
+            return GroupsViewHolder(binding, groupItemClickListener)
         }
     }
 }

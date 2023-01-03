@@ -16,10 +16,12 @@ class FavouriteGroupViewModel  @Inject constructor(
 
     var groups = mutableListOf<GroupModel>()
     var notifyNewGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
+    var notifyNewGroupsDeletedLiveData = MutableLiveData<Pair<Int, Int>>()
 
     init {
         groups = mutableListOf()
         notifyNewGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
+        notifyNewGroupsDeletedLiveData = MutableLiveData<Pair<Int, Int>>()
     }
 
     fun getGroupList() {
@@ -28,6 +30,14 @@ class FavouriteGroupViewModel  @Inject constructor(
             val startIndex = groups.size
             groups.addAll(groupList)
             notifyNewGroupsInsertedLiveData.postValue(Pair(startIndex, groupList.size))
+        }
+    }
+
+    fun resetFavouriteItems() {
+        if (groups.isNotEmpty()) {
+            val size = groups.size
+            groups = mutableListOf()
+            notifyNewGroupsDeletedLiveData.postValue(Pair(0, size))
         }
     }
 

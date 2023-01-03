@@ -82,6 +82,13 @@ class ViewGroupFragment : Fragment() {
             }
         }
 
+        viewGroupViewModel.favouriteStatusUpdated.observe(viewLifecycleOwner) { isFavourite ->
+            isFavourite?.let {
+                updateFavouriteIcon(it)
+                viewGroupViewModel.resetFavouriteStatus()
+            }
+        }
+
         binding.viewJoinNow.setSafeOnClickListener {
             try {
                 val intentWhatsAppGroup = Intent(Intent.ACTION_VIEW)
@@ -96,12 +103,13 @@ class ViewGroupFragment : Fragment() {
 
         }
 
-        updateFavouriteIcon()
+        groupData?.let {
+            updateFavouriteIcon(viewGroupViewModel.isFavouriteItem(it))
+        }
 
         binding.favorite.setSafeOnClickListener {
             groupData?.let {
                 viewGroupViewModel.updateFavouriteItem(it)
-                updateFavouriteIcon()
             }
         }
 
@@ -127,12 +135,10 @@ class ViewGroupFragment : Fragment() {
         }
     }
 
-    private fun updateFavouriteIcon() {
-        groupData?.let {
-            if (viewGroupViewModel.isFavouriteItem(it))
-                binding.favorite.setImageResource(R.drawable.ic_favorite)
-            else
-                binding.favorite.setImageResource(R.drawable.ic_not_favorite)
-        }
+    private fun updateFavouriteIcon(isFavouriteItem: Boolean) {
+        if (isFavouriteItem)
+            binding.favorite.setImageResource(R.drawable.ic_favorite)
+        else
+            binding.favorite.setImageResource(R.drawable.ic_not_favorite)
     }
 }

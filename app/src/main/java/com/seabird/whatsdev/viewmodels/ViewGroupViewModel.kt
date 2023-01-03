@@ -27,6 +27,8 @@ class ViewGroupViewModel @Inject constructor(
     val reportRes : LiveData<Resource<UpdateViewedGroupResponse>?>
         get() = _reportRes
 
+    var favouriteStatusUpdated = MutableLiveData<Boolean?>()
+
     fun updateViewedStatus(groupId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = appRepository.updateViewedGroupStatus(groupId.toString())
@@ -52,12 +54,19 @@ class ViewGroupViewModel @Inject constructor(
         _reportRes.postValue(null)
     }
 
+    fun resetFavouriteStatus() {
+        favouriteStatusUpdated.postValue(null)
+    }
+
     fun updateFavouriteItem(groupModel: GroupModel) {
         viewModelScope.launch {
-            if (isFavouriteItem(groupModel))
+            if (isFavouriteItem(groupModel)) {
                 groupRepository.deleteGroup(groupModel.id)
-            else
+                favouriteStatusUpdated.postValue(false)
+            } else {
                 groupRepository.insertGroup(groupModel)
+                favouriteStatusUpdated.postValue(true)
+            }
         }
     }
 
