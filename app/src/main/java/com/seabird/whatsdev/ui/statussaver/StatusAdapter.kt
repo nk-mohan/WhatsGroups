@@ -3,8 +3,12 @@ package com.seabird.whatsdev.ui.statussaver
 import android.net.Uri
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.seabird.whatsdev.ui.StatusItemClickListener
 
-class StatusAdapter(val selectedList: ArrayList<Uri>) : RecyclerView.Adapter<StatusViewHolder>() {
+class StatusAdapter(
+    private val selectedList: ArrayList<Uri>,
+    private val statusItemClickListener: StatusItemClickListener
+) : RecyclerView.Adapter<StatusViewHolder>() {
 
     private val mediaList = arrayListOf<Uri>()
 
@@ -18,8 +22,7 @@ class StatusAdapter(val selectedList: ArrayList<Uri>) : RecyclerView.Adapter<Sta
             mediaData,
             position,
             selectedList.contains(mediaData),
-            if (mediaData.path!!.contains(".jpg")) onItemClicked else onVideoItemClicked,
-            if (mediaData.path!!.contains(".jpg")) onItemLongClicked else onVideoItemLongClicked
+            statusItemClickListener
         )
     }
 
@@ -39,28 +42,5 @@ class StatusAdapter(val selectedList: ArrayList<Uri>) : RecyclerView.Adapter<Sta
         mediaList.clear()
         mediaList.addAll(mediaData)
         notifyDataSetChanged()
-    }
-
-    fun setItemClickListener(fn: (Int) -> Unit) {
-        onItemClicked = fn
-    }
-
-    fun setItemLongClickListener(fn: (Int) -> Unit) {
-        onItemLongClicked = fn
-    }
-
-    fun setVideoItemLongClickListener(fn: (Int) -> Unit) {
-        onVideoItemLongClicked = fn
-    }
-
-    fun setVideoItemClickListener(fn: (Int) -> Unit) {
-        onVideoItemClicked = fn
-    }
-
-    companion object {
-        lateinit var onItemClicked: (Int) -> Unit
-        lateinit var onItemLongClicked: (Int) -> Unit
-        lateinit var onVideoItemClicked: (Int) -> Unit
-        lateinit var onVideoItemLongClicked: (Int) -> Unit
     }
 }

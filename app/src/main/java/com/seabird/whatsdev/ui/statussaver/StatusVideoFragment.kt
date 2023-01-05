@@ -13,6 +13,7 @@ import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentStatusVideoBinding
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.MainActivity
+import com.seabird.whatsdev.ui.StatusItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
 class StatusVideoFragment : Fragment() {
@@ -22,7 +23,29 @@ class StatusVideoFragment : Fragment() {
 
     private val statusSaverViewModel: StatusSaverViewModel by activityViewModels()
 
-    private val statusAdapter: StatusAdapter by lazy { StatusAdapter(statusSaverViewModel.selectedList) }
+    private val statusAdapter: StatusAdapter by lazy { StatusAdapter(statusSaverViewModel.selectedList, statusItemClickListener) }
+
+    private val statusItemClickListener = object : StatusItemClickListener {
+        override fun setItemClickListener(position: Int) {
+            if (statusSaverViewModel.selectedList.isEmpty()) {
+                val bundle = Bundle()
+                bundle.putInt(AppConstants.MEDIA_POSITION, position)
+                bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, false)
+                findNavController().navigate(R.id.nav_status_viewer, bundle)
+            } else {
+                statusSaverViewModel.selectOrDeselectVideoItem(position)
+                statusAdapter.notifyItemChanged(position)
+                (activity as MainActivity).onStatusItemSelected()
+            }
+        }
+
+        override fun setItemLongClickListener(position: Int) {
+            statusSaverViewModel.selectOrDeselectVideoItem(position)
+            statusAdapter.notifyItemChanged(position)
+            (activity as MainActivity).onStatusItemSelected()
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,25 +97,6 @@ class StatusVideoFragment : Fragment() {
                     statusAdapter.notifyItemRangeChanged(0, statusSaverViewModel.videoList.value!!.size, bundle)
                 }
             }
-        }
-
-        statusAdapter.setVideoItemClickListener {
-            if (statusSaverViewModel.selectedList.isEmpty()) {
-                val bundle = Bundle()
-                bundle.putInt(AppConstants.MEDIA_POSITION, it)
-                bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, false)
-                findNavController().navigate(R.id.nav_status_viewer, bundle)
-            } else {
-                statusSaverViewModel.selectOrDeselectVideoItem(it)
-                statusAdapter.notifyItemChanged(it)
-                (activity as MainActivity).onStatusItemSelected()
-            }
-        }
-
-        statusAdapter.setVideoItemLongClickListener {
-            statusSaverViewModel.selectOrDeselectVideoItem(it)
-            statusAdapter.notifyItemChanged(it)
-            (activity as MainActivity).onStatusItemSelected()
         }
     }
 

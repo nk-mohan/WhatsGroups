@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.seabird.whatsdev.R
@@ -19,6 +20,7 @@ import com.seabird.whatsdev.databinding.FragmentViewGroupBinding
 import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.other.Status
 import com.seabird.whatsdev.setSafeOnClickListener
+import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.AppConstants
 import com.seabird.whatsdev.utils.AppUtils
 import com.seabird.whatsdev.viewmodels.ViewGroupViewModel
@@ -40,6 +42,8 @@ class ViewGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity?)?.supportActionBar?.show()
+        (activity as MainActivity).lockNavigationDrawer()
         _binding = FragmentViewGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -140,5 +144,11 @@ class ViewGroupFragment : Fragment() {
             binding.favorite.setImageResource(R.drawable.ic_favorite)
         else
             binding.favorite.setImageResource(R.drawable.ic_not_favorite)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as MainActivity).unlockNavigationDrawer()
+        _binding = null
     }
 }

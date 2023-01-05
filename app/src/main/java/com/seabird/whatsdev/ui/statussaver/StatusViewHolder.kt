@@ -7,30 +7,31 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seabird.whatsdev.databinding.RowStatusItemBinding
 import com.seabird.whatsdev.setSafeOnClickListener
+import com.seabird.whatsdev.ui.StatusItemClickListener
 
 class StatusViewHolder(private val viewBinding: RowStatusItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(uri: Uri, position: Int, isSelected: Boolean, onItemClicked: (Int) -> Unit, onItemLongClicked: (Int) -> Unit) {
+    fun bindValues(uri: Uri, position: Int, isSelected: Boolean, statusItemClickListener: StatusItemClickListener) {
 
         viewBinding.uri = uri
         viewBinding.playLayout.visibility = if (uri.path!!.contains(".jpg")) View.GONE else View.VISIBLE
         viewBinding.selectedLayout.visibility = if (isSelected) View.VISIBLE else View.GONE
 
         viewBinding.playLayout.setSafeOnClickListener {
-            onItemClicked(position)
+            statusItemClickListener.setItemClickListener(position)
         }
 
         viewBinding.imageView.setSafeOnClickListener {
-            onItemClicked(position)
+            statusItemClickListener.setItemClickListener(position)
         }
 
         viewBinding.imageView.setOnLongClickListener {
-            onItemLongClicked(position)
+            statusItemClickListener.setItemLongClickListener(position)
             false
         }
 
         viewBinding.playLayout.setOnLongClickListener {
-            onItemLongClicked(position)
+            statusItemClickListener.setItemLongClickListener(position)
             false
         }
     }

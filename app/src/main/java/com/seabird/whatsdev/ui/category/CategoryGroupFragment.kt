@@ -56,6 +56,7 @@ class CategoryGroupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         (activity as AppCompatActivity?)?.supportActionBar?.show()
+        (activity as MainActivity).lockNavigationDrawer()
         _binding = FragmentCategoryGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -167,6 +168,7 @@ class CategoryGroupFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).unlockNavigationDrawer()
         _binding = null
     }
 }

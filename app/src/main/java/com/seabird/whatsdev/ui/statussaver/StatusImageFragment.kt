@@ -20,6 +20,7 @@ import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentStatusImageBinding
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.MainActivity
+import com.seabird.whatsdev.ui.StatusItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
 
@@ -30,7 +31,7 @@ class StatusImageFragment : Fragment() {
 
     private val statusSaverViewModel: StatusSaverViewModel by activityViewModels()
 
-    private val statusAdapter: StatusAdapter by lazy { StatusAdapter(statusSaverViewModel.selectedList) }
+    private val statusAdapter: StatusAdapter by lazy { StatusAdapter(statusSaverViewModel.selectedList, statusItemClickListener) }
 
     private val whatsappPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
@@ -38,6 +39,28 @@ class StatusImageFragment : Fragment() {
             requireActivity().contentResolver.takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             statusSaverViewModel.readSDK30(DocumentFile.fromTreeUri(requireContext(), treeUri)!!)
         }
+    }
+
+    private val statusItemClickListener = object : StatusItemClickListener {
+        override fun setItemClickListener(position: Int) {
+            if (statusSaverViewModel.selectedList.isEmpty()) {
+                val bundle = Bundle()
+                bundle.putInt(AppConstants.MEDIA_POSITION, position)
+                bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, true)
+                findNavController().navigate(R.id.nav_status_viewer, bundle)
+            } else {
+                statusSaverViewModel.selectOrDeselectImageItem(position)
+                statusAdapter.notifyItemChanged(position)
+                (activity as MainActivity).onStatusItemSelected()
+            }
+        }
+
+        override fun setItemLongClickListener(position: Int) {
+            statusSaverViewModel.selectOrDeselectImageItem(position)
+            statusAdapter.notifyItemChanged(position)
+            (activity as MainActivity).onStatusItemSelected()
+        }
+
     }
 
     override fun onCreateView(
@@ -71,25 +94,6 @@ class StatusImageFragment : Fragment() {
             if (launchIntent != null) {
                 startActivity(launchIntent)
             }
-        }
-
-        statusAdapter.setItemClickListener {
-            if (statusSaverViewModel.selectedList.isEmpty()) {
-                val bundle = Bundle()
-                bundle.putInt(AppConstants.MEDIA_POSITION, it)
-                bundle.putBoolean(AppConstants.FROM_IMAGE_LIST, true)
-                findNavController().navigate(R.id.nav_status_viewer, bundle)
-            } else {
-                statusSaverViewModel.selectOrDeselectImageItem(it)
-                statusAdapter.notifyItemChanged(it)
-                (activity as MainActivity).onStatusItemSelected()
-            }
-        }
-
-        statusAdapter.setItemLongClickListener {
-            statusSaverViewModel.selectOrDeselectImageItem(it)
-            statusAdapter.notifyItemChanged(it)
-            (activity as MainActivity).onStatusItemSelected()
         }
     }
 
