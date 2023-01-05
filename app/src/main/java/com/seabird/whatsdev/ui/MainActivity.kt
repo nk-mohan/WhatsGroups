@@ -5,6 +5,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -27,6 +29,7 @@ import com.seabird.whatsdev.ui.statussaver.StatusSavingAlertDialog
 import com.seabird.whatsdev.utils.PermissionAlertDialog
 import com.seabird.whatsdev.utils.PermissionDialogListener
 import com.seabird.whatsdev.utils.PermissionManager
+import com.seabird.whatsdev.viewmodels.FavouriteGroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity(), ActivityListener {
     private var actionMode: ActionMode? = null
 
     private val statusSaverViewModel: StatusSaverViewModel by viewModels()
+    private val favouriteGroupViewModel: FavouriteGroupViewModel by viewModels()
 
     @Inject
     lateinit var permissionAlertDialog: PermissionAlertDialog
@@ -103,35 +107,17 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         }
     }
 
-    private fun setUpActionMode() {
-        actionMode = binding.appBarMain.toolbar.startActionMode(object : ActionMode.Callback{
-            override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
-                mode.menuInflater?.inflate(R.menu.save_status_menu, menu)
-                mode.title = statusSaverViewModel.selectedList.size.toString()
-                return true
-            }
-
-            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                return false
-            }
-
-            override fun onActionItemClicked(mode: ActionMode?, item: MenuItem): Boolean {
-                return onActionMenuClick(item.itemId)
-            }
-
-            override fun onDestroyActionMode(mode: ActionMode?) {
-                mode?.finish()
-                statusSaverViewModel.clearAllData()
-                actionMode = null
-            }
-
-        })
-    }
-
     private fun onActionMenuClick(itemId: Int): Boolean {
         return when (itemId) {
             R.id.action_save_status -> {
                 checkWritePermission()
+                false
+            }
+            R.id.action_delete_favourite -> {
+                favouriteGroupViewModel.deleteSelectedItems()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    actionMode?.finish()
+                }, 250)
                 false
             }
             else -> false
@@ -179,9 +165,18 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         if (statusSaverViewModel.selectedList.isEmpty())
             actionMode?.finish()
         else if (actionMode == null) {
-            setUpActionMode()
+            setUpStatusActionMode()
         } else
             actionMode?.title = statusSaverViewModel.selectedList.size.toString()
+    }
+
+    override fun onFavouriteGroupSelected() {
+        if (favouriteGroupViewModel.selectedList.isEmpty())
+            actionMode?.finish()
+        else if (actionMode == null) {
+            setUpFavouriteActionMode()
+        } else
+            actionMode?.title = favouriteGroupViewModel.selectedList.size.toString()
     }
 
     override fun hideAddGroupAction() {
@@ -192,6 +187,56 @@ class MainActivity : AppCompatActivity(), ActivityListener {
     override fun showAddGroupAction() {
         if (::binding.isInitialized)
             binding.appBarMain.addGroup.visibility = View.VISIBLE
+    }
+
+    private fun setUpStatusActionMode() {
+        actionMode = binding.appBarMain.toolbar.startActionMode(object : ActionMode.Callback{
+            override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
+                mode.menuInflater?.inflate(R.menu.save_status_menu, menu)
+                mode.title = statusSaverViewModel.selectedList.size.toString()
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, item: MenuItem): Boolean {
+                return onActionMenuClick(item.itemId)
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                mode?.finish()
+                statusSaverViewModel.clearAllData()
+                actionMode = null
+            }
+
+        })
+    }
+
+    private fun setUpFavouriteActionMode() {
+        actionMode = binding.appBarMain.toolbar.startActionMode(object : ActionMode.Callback{
+            override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
+                mode.menuInflater?.inflate(R.menu.favourite_menu, menu)
+                mode.title = favouriteGroupViewModel.selectedList.size.toString()
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, item: MenuItem): Boolean {
+                return onActionMenuClick(item.itemId)
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                mode?.finish()
+                favouriteGroupViewModel.clearAllData()
+                actionMode = null
+            }
+
+        })
     }
 
     override fun onBackPressed() {

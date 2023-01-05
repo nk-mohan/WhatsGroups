@@ -28,14 +28,32 @@ class FavoriteFragment : Fragment() {
     private val groupViewModel: FavouriteGroupViewModel by activityViewModels()
 
     private val groupItemClickListener = object : GroupItemClickListener {
-        override fun onGroupItemClicked(groupModel: GroupModel) {
-            val bundle = Bundle()
-            bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
-            findNavController().navigate(R.id.nav_view_group, bundle)
+        override fun onGroupItemClicked(position: Int, groupModel: GroupModel) {
+            if (groupViewModel.selectedList.isEmpty()) {
+                val bundle = Bundle()
+                bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
+                findNavController().navigate(R.id.nav_view_group, bundle)
+            } else {
+                groupViewModel.selectOrDeselectGroupItem(position)
+                groupsAdapter.notifyItemChanged(position)
+                (activity as MainActivity).onFavouriteGroupSelected()
+            }
+        }
+
+        override fun onGroupItemLongClicked(position: Int) {
+            groupViewModel.selectOrDeselectGroupItem(position)
+            groupsAdapter.notifyItemChanged(position)
+            (activity as MainActivity).onFavouriteGroupSelected()
         }
 
         override fun onFavouriteItemClicked(position: Int, groupModel: GroupModel) {
-            groupsAdapter.notifyItemChanged(position)
+            if (groupViewModel.selectedList.isEmpty()) {
+                groupsAdapter.notifyItemChanged(position)
+            } else {
+                groupViewModel.selectOrDeselectGroupItem(position)
+                groupsAdapter.notifyItemChanged(position)
+                (activity as MainActivity).onFavouriteGroupSelected()
+            }
         }
 
         override fun isFavouriteItem(groupModel: GroupModel): Boolean {
@@ -43,7 +61,7 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), true, groupItemClickListener) }
+    private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), true, groupItemClickListener, groupViewModel.selectedList) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +90,14 @@ class FavoriteFragment : Fragment() {
 
         groupViewModel.notifyNewGroupsDeletedLiveData.observe(viewLifecycleOwner) {
             groupsAdapter.notifyItemRangeRemoved(it.first, it.second)
+        }
+
+        groupViewModel.clearSelection.observe(viewLifecycleOwner) {
+            if (it && groupViewModel.groups.isNotEmpty()) {
+                val bundle = Bundle()
+                bundle.putInt(AppConstants.REFRESH_SELECTION, 1)
+                groupsAdapter.notifyItemRangeChanged(0, groupViewModel.groups.size, bundle)
+            }
         }
     }
 

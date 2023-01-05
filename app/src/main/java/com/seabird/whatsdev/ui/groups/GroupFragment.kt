@@ -33,10 +33,14 @@ class GroupFragment : Fragment() {
     private val groupViewModel: GroupViewModel by activityViewModels()
 
     private val groupItemClickListener = object : GroupItemClickListener {
-        override fun onGroupItemClicked(groupModel: GroupModel) {
+        override fun onGroupItemClicked(position: Int, groupModel: GroupModel) {
             val bundle = Bundle()
             bundle.putParcelable(AppConstants.GROUP_DATA, groupModel)
             findNavController().navigate(R.id.nav_view_group, bundle)
+        }
+
+        override fun onGroupItemLongClicked(position: Int) {
+            //Not needed
         }
 
         override fun onFavouriteItemClicked(position: Int, groupModel: GroupModel) {

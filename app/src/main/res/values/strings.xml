@@ -106,4 +106,5 @@
     <string name="favorite_list_not_loaded">You don\'t have any favorite groups</string>
     <string name="category_list_not_loaded">Category list not loaded</string>
     <string name="group_list_is_empty">Group list is empty</string>
+    <string name="delete_favourite">Delete favourite</string>
 </resources>

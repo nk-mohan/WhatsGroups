@@ -7,7 +7,7 @@ import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.ui.GroupItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
-class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false, val clickListener: GroupItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false, val clickListener: GroupItemClickListener, private val selectedList: ArrayList<Int> = arrayListOf()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoadingAdded = false
     private var loaderPosition = -1
@@ -21,10 +21,19 @@ class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val groupData = groupList[position]
         when (holder) {
-            is GroupsViewHolder -> holder.bindValues(groupData, position, isFromFavorite)
+            is GroupsViewHolder -> holder.bindValues(groupData, isFromFavorite, selectedList.contains(groupData.id))
             is ProgressViewHolder -> holder.updateLoader(groupList.size <= 1)
         }
+    }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
+        else {
+            val groupData = groupList[position]
+            if (holder is GroupsViewHolder)
+                holder.updateSelection(selectedList.contains(groupData.id))
+        }
     }
 
     override fun getItemCount(): Int {

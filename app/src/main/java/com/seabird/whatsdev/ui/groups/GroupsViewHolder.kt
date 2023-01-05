@@ -12,20 +12,34 @@ import com.seabird.whatsdev.ui.GroupItemClickListener
 
 class GroupsViewHolder(private var viewBinding: RowGroupItemBinding, private val groupItemClickListener: GroupItemClickListener) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bindValues(groupData: GroupModel, position: Int, isFromFavorite: Boolean) {
+    fun bindValues(groupData: GroupModel, isFromFavorite: Boolean, isSelected: Boolean) {
         viewBinding.groupData = groupData
 
         viewBinding.favorite.visibility = if (isFromFavorite) View.GONE else View.VISIBLE
+        updateSelection(isSelected)
 
         viewBinding.favorite.setImageResource(if (groupItemClickListener.isFavouriteItem(groupData)) R.drawable.ic_favorite else R.drawable.ic_not_favorite)
 
         viewBinding.favorite.setSafeOnClickListener {
-            groupItemClickListener.onFavouriteItemClicked(position, groupData)
+            groupItemClickListener.onFavouriteItemClicked(layoutPosition, groupData)
         }
 
         viewBinding.rootLayout.setSafeOnClickListener {
-            groupItemClickListener.onGroupItemClicked(groupData)
+            groupItemClickListener.onGroupItemClicked(layoutPosition,groupData)
         }
+
+        viewBinding.rootLayout.setOnLongClickListener {
+            groupItemClickListener.onGroupItemLongClicked(layoutPosition)
+            false
+        }
+
+        viewBinding.selectedLayout.setSafeOnClickListener {
+            groupItemClickListener.onGroupItemClicked(layoutPosition, groupData)
+        }
+    }
+
+    fun updateSelection(isSelected: Boolean) {
+        viewBinding.selectedLayout.visibility = if (isSelected) View.VISIBLE else View.GONE
     }
 
     companion object {

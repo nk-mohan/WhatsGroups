@@ -16,6 +16,10 @@ class GroupRepository @Inject constructor(private val groupDao: GroupDao){
         groupDao.deleteGroup(groupId)
     }
 
+    suspend fun deleteGroups(groupIds: ArrayList<Int>) {
+        groupDao.deleteGroups(groupIds)
+    }
+
     suspend fun getAllGroups(): ArrayList<GroupModel> {
         val groupList = ArrayList<GroupModel>()
         groupDao.getGroupList().forEach {

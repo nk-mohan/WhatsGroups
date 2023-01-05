@@ -18,4 +18,7 @@ interface GroupDao {
 
     @Query("DELETE FROM groups WHERE id =:groupId")
     suspend fun deleteGroup(groupId: Int)
+
+    @Query("DELETE FROM groups WHERE id in (:groupIds)")
+    suspend fun deleteGroups(groupIds: ArrayList<Int>)
 }
