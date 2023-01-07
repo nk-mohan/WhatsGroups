@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -62,9 +63,6 @@ class StatusVideoFragment : Fragment() {
     }
 
     private fun setUpViews() {
-        binding.shimmerLayout.startShimmer()
-        binding.shimmerLayout.visibility = View.VISIBLE
-
         binding.rvStatusVideo.apply {
             layoutManager = GridLayoutManager(requireContext(), 3)
             setEmptyView(null)
@@ -72,10 +70,21 @@ class StatusVideoFragment : Fragment() {
             addItemDecoration(GridSpacingItemDecoration(requireContext(), 3))
         }
 
+        if (statusSaverViewModel.whatsappNotInstalled.value == true) {
+            binding.rvStatusVideo.setEmptyView(binding.emptyView.emptyViewLayout)
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
+        } else {
+            binding.shimmerLayout.startShimmer()
+            binding.shimmerLayout.visibility = View.VISIBLE
+        }
+
         binding.emptyView.viewStatus.setSafeOnClickListener {
             val launchIntent: Intent? = requireActivity().packageManager.getLaunchIntentForPackage("com.whatsapp")
             if (launchIntent != null) {
                 startActivity(launchIntent)
+            } else {
+                Toast.makeText(requireContext(), "WhatsApp Not Installed", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -96,6 +105,15 @@ class StatusVideoFragment : Fragment() {
                     bundle.putInt(AppConstants.REFRESH_SELECTION, 1)
                     statusAdapter.notifyItemRangeChanged(0, statusSaverViewModel.videoList.value!!.size, bundle)
                 }
+            }
+
+            statusSaverViewModel.whatsappNotInstalled.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.rvStatusVideo.setEmptyView(binding.emptyView.emptyViewLayout)
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                }
+
             }
         }
     }

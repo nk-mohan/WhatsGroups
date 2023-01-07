@@ -16,6 +16,7 @@ class StatusSaverViewModel : ViewModel() {
     val selectedList = ArrayList<Uri>()
     val clearSelection = MutableLiveData<Boolean>()
     val updateList = MutableLiveData<Boolean>()
+    val whatsappNotInstalled = MutableLiveData<Boolean>()
 
     fun getWhatsUpFolder(): String {
         return if (Build.VERSION.SDK_INT >= 29) {
@@ -77,5 +78,9 @@ class StatusSaverViewModel : ViewModel() {
 
     fun updateData() {
         updateList.postValue(true)
+    }
+
+    fun whatsappNotInstalled() {
+        whatsappNotInstalled.postValue(true)
     }
 }

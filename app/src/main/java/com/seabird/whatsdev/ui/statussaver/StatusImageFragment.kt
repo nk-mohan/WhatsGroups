@@ -10,6 +10,7 @@ import android.os.storage.StorageManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
@@ -93,6 +94,8 @@ class StatusImageFragment : Fragment() {
             val launchIntent: Intent? = requireActivity().packageManager.getLaunchIntentForPackage("com.whatsapp")
             if (launchIntent != null) {
                 startActivity(launchIntent)
+            } else {
+                Toast.makeText(requireContext(), "WhatsApp Not Installed", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -118,6 +121,15 @@ class StatusImageFragment : Fragment() {
         statusSaverViewModel.updateList.observe(viewLifecycleOwner) {
             if (it)
                 checkWhatsappFolderPermission()
+        }
+
+        statusSaverViewModel.whatsappNotInstalled.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.rvStatusImage.setEmptyView(binding.emptyView.emptyViewLayout)
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
+            }
+
         }
     }
 
@@ -164,6 +176,8 @@ class StatusImageFragment : Fragment() {
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             whatsappPermissionLauncher.launch(intent)
             return
+        } else {
+            statusSaverViewModel.whatsappNotInstalled()
         }
     }
 
