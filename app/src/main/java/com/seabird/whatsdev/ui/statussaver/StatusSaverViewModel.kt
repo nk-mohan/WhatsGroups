@@ -2,12 +2,14 @@ package com.seabird.whatsdev.ui.statussaver
 
 import android.net.Uri
 import android.os.Build
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class StatusSaverViewModel : ViewModel() {
 
@@ -35,6 +37,26 @@ class StatusSaverViewModel : ViewModel() {
                     uriImageList.add(uri)
                 else
                     uriVideoList.add(uri)
+            }
+            imageList.postValue(uriImageList)
+            videoList.postValue(uriVideoList)
+        }
+    }
+
+    fun readSDKBelow30(path: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val uriImageList  = arrayListOf<Uri>()
+            val uriVideoList  = arrayListOf<Uri>()
+            val folder = File(path)
+            folder.listFiles()?.let { files ->
+                for (i in files.indices) {
+                    if (!files[i].absolutePath.contains("nomedia")) {
+                        if (files[i].absolutePath.contains(".jpg"))
+                            uriImageList.add(files[i].toUri())
+                        else
+                            uriVideoList.add(files[i].toUri())
+                    }
+                }
             }
             imageList.postValue(uriImageList)
             videoList.postValue(uriVideoList)

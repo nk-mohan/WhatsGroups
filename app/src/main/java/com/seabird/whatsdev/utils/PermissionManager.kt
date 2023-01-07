@@ -20,7 +20,7 @@ object PermissionManager {
         permissionsLauncher: ActivityResultLauncher<Array<String>>,
         permissionDialogListener: PermissionDialogListener
     ) {
-        val hasReadPermission = isPermissionAllowed(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+        val hasReadPermission = isReadFilePermissionAllowed(activity)
         val hasWritePermission = isPermissionAllowed(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         val minSdk29 = Build.VERSION.SDK_INT > Build.VERSION_CODES.P
@@ -32,11 +32,16 @@ object PermissionManager {
             permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         if (!hasReadPermission) {
-            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES)
+                permissionsToRequest.add(Manifest.permission.READ_MEDIA_VIDEO)
+            } else {
+                permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         }
         if (permissionsToRequest.isNotEmpty()) {
             when {
-                ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                canShowRationalReadPermission(activity) -> {
                     showPermissionPopUpForStorage(
                         permissionsLauncher,
                         permissionsToRequest,
@@ -61,6 +66,14 @@ object PermissionManager {
                 }
             }
         }
+    }
+
+    private fun canShowRationalReadPermission(activity: Activity): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_MEDIA_IMAGES)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_MEDIA_VIDEO)
+        } else
+            ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
     private fun showPermissionPopUpForStorage(
@@ -105,7 +118,12 @@ object PermissionManager {
     }
 
     fun isReadFilePermissionAllowed(context: Context): Boolean {
-        return isPermissionAllowed(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            isPermissionAllowed(context, Manifest.permission.READ_MEDIA_IMAGES) &&
+                    isPermissionAllowed(context, Manifest.permission.READ_MEDIA_VIDEO)
+        } else {
+            isPermissionAllowed(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     fun isWriteFilePermissionAllowed(context: Context): Boolean {

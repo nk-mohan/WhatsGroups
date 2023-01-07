@@ -25,8 +25,10 @@
     <string name="continue_label">Continue</string>
     <string name="not_now_label">Not Now</string>
 
-    <string name="storage_permission_alert_label">To save whatsapp status, allow Whats Groups access to your Storage.</string>
-    <string name="storage_permission_denied_alert_label">Whats Groups need the Storage Permission in order to save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
+    <string name="storage_permission_alert_label">To read &amp; save whatsapp status, allow Whats Groups access to your Storage.</string>
+    <string name="storage_permission_denied_alert_label">Whats Groups need the Storage Permission in order to read &amp; save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
+    <string name="storage_permission_denied_label">Storage Permission Not Provided</string>
+    <string name="enable_permission">Enable Permission</string>
 
     <string name="no_status_found">No Status Found</string>
     <string name="to_view_status">To View status</string>
