@@ -1,13 +1,19 @@
 package com.seabird.whatsdev.ui.statussaver
 
 import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.TAG
@@ -18,6 +24,8 @@ import com.seabird.whatsdev.utils.DownloadUtils
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 
 class StatusSavingAlertDialog @Inject constructor(private var activity: Activity) {
@@ -54,8 +62,6 @@ class StatusSavingAlertDialog @Inject constructor(private var activity: Activity
                     dialogBinding.downloadCount.text = String.format(activity.getString(R.string.downloading_count), index, localData.size)
                 }
                 downloadStatus(uri)?.let {
-                    val mimeType = MimeTypeMap.getFileExtensionFromUrl(it.absolutePath)
-                    MediaScannerConnection.scanFile(activity, arrayOf(it.absolutePath), arrayOf(mimeType), null)
                     launch(Dispatchers.Main) {
                         dialogBinding.downloadCount.text = String.format(activity.getString(R.string.downloading_count), index + 1, localData.size)
                         if (index + 1 == localData.size) {
@@ -81,18 +87,74 @@ class StatusSavingAlertDialog @Inject constructor(private var activity: Activity
     private fun downloadStatus(uri: Uri): File? {
         try {
             val filename = File(uri.path).name
-            val downloadFile = AppUtils.getDownloadedFile(activity, filename)
             val inputStream = activity.contentResolver.openInputStream(uri)
-            val fileOutputStream = FileOutputStream(downloadFile)
-            inputStream?.let {
-                DownloadUtils.copyStream(inputStream, fileOutputStream)
-                fileOutputStream.close()
-                inputStream.close()
-                return downloadFile
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                inputStream?.let {
+                    val environment = if (filename.contains(".jpg")) Environment.DIRECTORY_PICTURES else Environment.DIRECTORY_MOVIES
+                    val mimeType = if (filename.contains(".jpg")) "image/jpg" else "video/mp4"
+                    val mediaStoreUri = if (filename.contains(".jpg")) MediaStore.Images.Media.EXTERNAL_CONTENT_URI else MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    val path = copyStream(activity, inputStream, filename, environment, mimeType, mediaStoreUri).path
+                    return if (path != null)
+                        File(path)
+                    else
+                        null
+                }
+            } else {
+                val downloadFile = AppUtils.getDownloadedFile(activity, filename)
+                val fileOutputStream = FileOutputStream(downloadFile)
+                inputStream?.let {
+                    DownloadUtils.copyStream(inputStream, fileOutputStream)
+                    fileOutputStream.close()
+                    inputStream.close()
+                    val mimeType = MimeTypeMap.getFileExtensionFromUrl(downloadFile.absolutePath)
+                    MediaScannerConnection.scanFile(activity, arrayOf(downloadFile.absolutePath), arrayOf(mimeType), null)
+                    return downloadFile
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, e.localizedMessage)
         }
         return null
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @Throws(IOException::class)
+    fun copyStream(context: Context, inputStream: InputStream, displayName: String, environment: String, mimeType: String, mediaStoreUri: Uri): Uri {
+
+        val relativeLocation = environment + File.separator + "WhatsApp Status"
+        val values = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
+            put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
+            put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
+        }
+
+        var uri: Uri? = null
+
+        return runCatching {
+            with(context.contentResolver) {
+                insert(mediaStoreUri, values)?.also {
+                    uri = it // Keep uri reference so it can be removed on failure
+
+                    openOutputStream(it)?.use { outputStream ->
+                        inputStream.use { inputStreamUse ->
+                            val buffer = ByteArray(1024)
+                            var bytesRead: Int
+                            while (inputStreamUse.read(buffer).also { bytesRead = it } != -1) {
+                                outputStream.write(buffer, 0, bytesRead)
+                            }
+                        }
+                    } ?: throw IOException("Failed to open output stream.")
+
+                } ?: throw IOException("Failed to create new MediaStore record.")
+            }
+        }.getOrElse {
+            uri?.let { orphanUri ->
+                // Don't leave an orphan entry in the MediaStore
+                context.contentResolver.delete(orphanUri, null, null)
+            }
+
+            throw it
+        }
+    }
+
 }

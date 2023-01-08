@@ -28,7 +28,7 @@ object AppUtils {
     }
 
     private fun getExternalStorage(applicationContext: Context): File {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) Environment.getExternalStorageDirectory() else applicationContext.filesDir
         } else applicationContext.externalMediaDirs[0]
     }
