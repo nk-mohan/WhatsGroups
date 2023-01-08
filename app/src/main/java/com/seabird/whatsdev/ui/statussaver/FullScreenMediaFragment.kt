@@ -183,11 +183,16 @@ class FullScreenMediaFragment : Fragment() {
                     val environment = if (filename.contains(".jpg")) Environment.DIRECTORY_PICTURES else Environment.DIRECTORY_MOVIES
                     val mimeType = if (filename.contains(".jpg")) "image/jpg" else "video/mp4"
                     val mediaStoreUri = if (filename.contains(".jpg")) MediaStore.Images.Media.EXTERNAL_CONTENT_URI else MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                    val path = copyStream(requireContext(), inputStream, filename, environment, mimeType, mediaStoreUri).path
-                    return if (path != null)
-                        File(path)
-                    else
-                        null
+                    val relativeLocation = environment + File.separator + "WhatsApp Status"
+                    val file = File(Environment.getExternalStoragePublicDirectory(relativeLocation), filename)
+                    return if (!file.exists()) {
+                        val path = copyStream(requireContext(), inputStream, filename, environment, mimeType, mediaStoreUri).path
+                        if (path != null)
+                            File(path)
+                        else
+                            null
+                    } else
+                        file
                 }
             } else {
                 val downloadFile = AppUtils.getDownloadedFile(requireContext(), filename)
@@ -209,9 +214,8 @@ class FullScreenMediaFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     @Throws(IOException::class)
-    fun copyStream(context: Context, inputStream: InputStream, displayName: String, environment: String, mimeType: String, mediaStoreUri: Uri): Uri {
+    fun copyStream(context: Context, inputStream: InputStream, displayName: String, relativeLocation: String, mimeType: String, mediaStoreUri: Uri): Uri {
 
-        val relativeLocation = environment + File.separator + "WhatsApp Status"
         val values = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
