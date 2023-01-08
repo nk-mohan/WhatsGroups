@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentViewGroupBinding
 import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.other.Status
+import com.seabird.whatsdev.parcelable
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.utils.AppConstants
@@ -50,11 +50,7 @@ class ViewGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        groupData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(AppConstants.GROUP_DATA, GroupModel::class.java)
-        } else {
-            arguments?.getParcelable(AppConstants.GROUP_DATA) as GroupModel?
-        }
+        groupData = arguments?.parcelable(AppConstants.GROUP_DATA)
 
         groupData?.let {
             binding.groupData = groupData

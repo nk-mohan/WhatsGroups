@@ -95,4 +95,11 @@
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
+
+    <fragment
+        android:id="@+id/nav_grant_folder_access"
+        android:name="com.seabird.whatsdev.ui.statussaver.ProvideAccessFragment"
+        android:label="@string/provide_folder_access_button"
+        tools:layout="@layout/fragment_provide_access" />
+
 </navigation>

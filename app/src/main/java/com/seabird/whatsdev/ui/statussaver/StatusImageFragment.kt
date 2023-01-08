@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.os.storage.StorageManager
 import android.view.LayoutInflater
 import android.view.View
@@ -21,13 +19,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentStatusImageBinding
+import com.seabird.whatsdev.getPackageInfoCompat
+import com.seabird.whatsdev.parcelable
 import com.seabird.whatsdev.setSafeOnClickListener
 import com.seabird.whatsdev.ui.MainActivity
 import com.seabird.whatsdev.ui.StatusItemClickListener
-import com.seabird.whatsdev.utils.AppConstants
-import com.seabird.whatsdev.utils.PermissionAlertDialog
-import com.seabird.whatsdev.utils.PermissionDialogListener
-import com.seabird.whatsdev.utils.PermissionManager
+import com.seabird.whatsdev.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +35,12 @@ class StatusImageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val statusSaverViewModel: StatusSaverViewModel by activityViewModels()
+    private var isPermissionPopUpShown = false
+    private var isFolderPermissionAsked = false
+    private lateinit var handler: Handler
+
+    private val permissionRunnable = { isPermissionPopUpShown = false }
+    private val folderPermissionRunnable = { isFolderPermissionAsked = false }
 
     @Inject
     lateinit var permissionAlertDialog: PermissionAlertDialog
@@ -92,6 +95,7 @@ class StatusImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handler = Handler(Looper.getMainLooper())
         setUpViews()
         setObservers()
         checkWritePermission()
@@ -168,63 +172,78 @@ class StatusImageFragment : Fragment() {
 
     private fun checkWritePermission() {
         binding.emptyView.emptyViewLayout.visibility = View.GONE
-        if (PermissionManager.isReadFilePermissionAllowed(requireContext())
-            && PermissionManager.isWriteFilePermissionAllowed(requireContext())) {
-            checkWhatsappFolderPermission()
-        } else {
-            PermissionManager.requestStoragePermission(requireActivity(), permissionAlertDialog, storagePermissionLauncher, object :
-                PermissionDialogListener {
-                override fun onPositiveButtonClicked() {
-                    //Not Needed
-                }
+        if (!isPermissionPopUpShown) {
+            isPermissionPopUpShown = true
+            if (PermissionManager.isReadFilePermissionAllowed(requireContext()) && PermissionManager.isWriteFilePermissionAllowed(requireContext())) {
+                checkWhatsappFolderPermission()
+            } else {
+                PermissionManager.requestStoragePermission(requireActivity(), permissionAlertDialog, storagePermissionLauncher, object :
+                        PermissionDialogListener {
+                        override fun onPositiveButtonClicked() {
+                            //Not Needed
+                        }
 
-                override fun onNegativeButtonClicked() {
-                    binding.rvStatusImage.setEmptyView(binding.disabledPermissionView.disabledViewLayout)
-                    binding.shimmerLayout.stopShimmer()
-                    binding.shimmerLayout.visibility = View.GONE
-                }
-            })
+                        override fun onNegativeButtonClicked() {
+                            binding.rvStatusImage.setEmptyView(binding.disabledPermissionView.disabledViewLayout)
+                            binding.shimmerLayout.stopShimmer()
+                            binding.shimmerLayout.visibility = View.GONE
+                        }
+                    })
+            }
         }
+        handler.removeCallbacks(permissionRunnable)
+        handler.postDelayed(permissionRunnable, 500)
     }
 
     private fun checkWhatsappFolderPermission() {
-        if (isWhatsUpInstalled()) {
-            if (Build.VERSION.SDK_INT >= 29) {
-                val intent: Intent
-                val storageManager = requireActivity().getSystemService(Context.STORAGE_SERVICE) as StorageManager
-                val statusDir = statusSaverViewModel.getWhatsUpFolder()
-                val str = "android.provider.extra.INITIAL_URI"
+        if (!isFolderPermissionAsked) {
+            isFolderPermissionAsked = true
+            if (SharedPreferenceManager.getBooleanValue(AppConstants.GRANT_FOLDER_ACCESS)) {
+                if (isWhatsUpInstalled()) {
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        val intent: Intent
+                        val storageManager = requireActivity().getSystemService(Context.STORAGE_SERVICE) as StorageManager
+                        val statusDir = statusSaverViewModel.getWhatsUpFolder()
+                        val str = "android.provider.extra.INITIAL_URI"
 
-                intent = storageManager.primaryStorageVolume.createOpenDocumentTreeIntent()
-                val scheme = (intent.getParcelableExtra<Uri>(str)).toString().replace("/root/", "/document/")
-                val stringBuilder = "$scheme%3A$statusDir"
-                intent.putExtra(str, Uri.parse(stringBuilder))
+                        intent = storageManager.primaryStorageVolume.createOpenDocumentTreeIntent()
+                        val scheme = (intent.parcelable<Uri>(str)).toString().replace("/root/", "/document/")
+                        val stringBuilder = "$scheme%3A$statusDir"
+                        intent.putExtra(str, Uri.parse(stringBuilder))
 
-                val persistedUriPermissions = requireActivity().contentResolver.persistedUriPermissions
-                persistedUriPermissions.forEach {
-                    if (it.uri.toString().contains(statusDir)) {
-                        statusSaverViewModel.readSDK30(DocumentFile.fromTreeUri(requireContext(), it.uri)!!)
-                        return
+                        val persistedUriPermissions = requireActivity().contentResolver.persistedUriPermissions
+                        persistedUriPermissions.forEach {
+                            if (it.uri.toString().contains(statusDir)) {
+                                statusSaverViewModel.readSDK30(DocumentFile.fromTreeUri(requireContext(), it.uri)!!)
+                                return
+                            }
+                        }
+                        binding.disabledPermissionView.disabledViewLayout.visibility = View.GONE
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        intent.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
+                        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        whatsappPermissionLauncher.launch(intent)
+                    } else {
+                        binding.disabledPermissionView.disabledViewLayout.visibility = View.GONE
+                        val path: String = Environment.getExternalStorageDirectory().toString() + "/WhatsApp/Media/.Statuses"
+                        statusSaverViewModel.readSDKBelow30(path)
                     }
+                } else {
+                    binding.disabledPermissionView.disabledViewLayout.visibility = View.GONE
+                    statusSaverViewModel.whatsappNotInstalled()
                 }
-
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                whatsappPermissionLauncher.launch(intent)
             } else {
-                val path: String = Environment.getExternalStorageDirectory().toString() + "/WhatsApp/Media/.Statuses"
-                statusSaverViewModel.readSDKBelow30(path)
+                findNavController().navigate(R.id.nav_grant_folder_access)
             }
-        } else {
-            statusSaverViewModel.whatsappNotInstalled()
         }
+        handler.removeCallbacks(folderPermissionRunnable)
+        handler.postDelayed(folderPermissionRunnable, 500)
     }
 
     private fun isWhatsUpInstalled(): Boolean {
         return try {
-            requireActivity().packageManager.getPackageInfo("com.whatsapp", 0)
+            requireActivity().packageManager.getPackageInfoCompat("com.whatsapp")
             true
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()

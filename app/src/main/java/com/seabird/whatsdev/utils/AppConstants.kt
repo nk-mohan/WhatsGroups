@@ -4,6 +4,7 @@ object AppConstants {
     const val SERVER_GROUP_LINK_NOT_VALID = "Group Link is not valid."
     const val ACCESS_TOKEN = "access_token"
     const val REFRESH_TOKEN = "refresh_token"
+    const val GRANT_FOLDER_ACCESS = "grant_folder_access"
     const val IS_REGISTERED = "is_registered"
     const val DEVICE_ID = "device_id"
     const val EMPTY_STRING = ""

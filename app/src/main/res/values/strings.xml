@@ -109,4 +109,11 @@
     <string name="category_list_not_loaded">Category list not loaded</string>
     <string name="group_list_is_empty">Group list is empty</string>
     <string name="delete_favourite">Delete favourite</string>
+
+
+    <string name="provide_folder_access_title">Starting Android 11(Android R), \nWhats Groups can no longer access Statuses easily due to Android Storage limitations.</string>
+    <string name="provide_folder_access_steps">To access Statuses again, certain additional steps are required to be followed from your end. These are only required to be performed once.</string>
+    <string name="provide_folder_access_steps_desc_1">Step 1. Click on "USE THIS FOLDER" on the next screen</string>
+    <string name="provide_folder_access_steps_desc_2">Step 2. Click on "ALLOW"</string>
+    <string name="provide_folder_access_button">Grant Folder Access</string>
 </resources>

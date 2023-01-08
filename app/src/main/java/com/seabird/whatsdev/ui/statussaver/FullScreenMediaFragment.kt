@@ -48,9 +48,9 @@ class FullScreenMediaFragment : Fragment() {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     var selectedMediaPosition = 0
-    var fromImageList = false
+    private var fromImageList = false
 
-    lateinit var mediaList:ArrayList<Uri>
+    private lateinit var mediaList:ArrayList<Uri>
 
     private var lastClickAction = 0
 
@@ -267,7 +267,7 @@ class FullScreenMediaFragment : Fragment() {
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "*/*"
             val uri = Uri.parse(it.absolutePath)
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_status_desc));
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_status_desc))
             sharingIntent.putExtra(Intent.EXTRA_STREAM, uri)
             sharingIntent.setPackage("com.whatsapp")
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_status_desc)))

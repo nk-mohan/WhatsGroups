@@ -13,7 +13,6 @@ import com.seabird.whatsdev.network.other.Resource
 import com.seabird.whatsdev.network.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel

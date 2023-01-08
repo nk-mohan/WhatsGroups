@@ -1,23 +1,13 @@
 package com.seabird.whatsdev.ui.settings
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.seabird.whatsdev.BuildConfig
-import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.FragmentSettingsBinding
 import com.seabird.whatsdev.ui.MainActivity
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SettingsFragment : Fragment() {
 

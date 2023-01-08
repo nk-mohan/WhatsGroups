@@ -170,7 +170,7 @@ class CircularImageView : AppCompatImageView {
         invalidate()
     }
 
-    var borderWidth: Int
+    private var borderWidth: Int
         get() = mBorderWidth
         private set(borderWidth) {
             if (borderWidth == mBorderWidth) {
@@ -224,8 +224,7 @@ class CircularImageView : AppCompatImageView {
         return if (drawable is BitmapDrawable) {
             drawable.bitmap
         } else try {
-            val bitmap: Bitmap
-            bitmap = if (drawable is ColorDrawable) {
+            val bitmap = if (drawable is ColorDrawable) {
                 Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG)
             } else {
                 Bitmap.createBitmap(drawable.intrinsicWidth,

@@ -11,6 +11,7 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -105,6 +106,8 @@ class MainActivity : AppCompatActivity(), ActivityListener {
             }
             true
         }
+
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
 
     private fun onActionMenuClick(itemId: Int): Boolean {
@@ -239,17 +242,21 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         })
     }
 
-    override fun onBackPressed() {
-        if (statusSaverViewModel.selectedList.isEmpty())
-            onBackPressedDispatcher.onBackPressed()
-        else {
-            statusSaverViewModel.clearAllData()
-            actionMode?.finish()
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            if (statusSaverViewModel.selectedList.isNotEmpty()) {
+                statusSaverViewModel.clearAllData()
+                actionMode?.finish()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        refreshStatusList()
+    }
+
+    fun refreshStatusList() {
         statusSaverViewModel.updateData()
     }
 }

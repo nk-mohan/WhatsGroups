@@ -7,7 +7,7 @@ import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.ui.GroupItemClickListener
 import com.seabird.whatsdev.utils.AppConstants
 
-class GroupsAdapter(var groupList: MutableList<GroupModel>, var isFromFavorite: Boolean = false, val clickListener: GroupItemClickListener, private val selectedList: ArrayList<Int> = arrayListOf()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupsAdapter(var groupList: MutableList<GroupModel>, private var isFromFavorite: Boolean = false, val clickListener: GroupItemClickListener, private val selectedList: ArrayList<Int> = arrayListOf()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoadingAdded = false
     private var loaderPosition = -1

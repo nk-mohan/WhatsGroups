@@ -24,7 +24,7 @@ class StatusSaverViewModel : ViewModel() {
         return if (Build.VERSION.SDK_INT >= 29) {
             "Android%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses"
         } else{
-            "WhatsApp%2FMedia%2F.Statuses";
+            "WhatsApp%2FMedia%2F.Statuses"
         }
     }
 
@@ -98,8 +98,8 @@ class StatusSaverViewModel : ViewModel() {
         clearSelection.value = true
     }
 
-    fun updateData() {
-        updateList.postValue(true)
+    fun updateData(value: Boolean = true) {
+        updateList.postValue(value)
     }
 
     fun whatsappNotInstalled() {
