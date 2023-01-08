@@ -244,7 +244,9 @@ class MainActivity : AppCompatActivity(), ActivityListener {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
-            if (statusSaverViewModel.selectedList.isNotEmpty()) {
+            if (statusSaverViewModel.selectedList.isEmpty())
+                onBackPressedDispatcher.onBackPressed()
+            else {
                 statusSaverViewModel.clearAllData()
                 actionMode?.finish()
             }
