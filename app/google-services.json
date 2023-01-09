@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "606281387298",
+    "project_id": "com-seabird-whatsdev",
+    "storage_bucket": "com-seabird-whatsdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606281387298:android:3f4d7e2464dd3b4ab7297b",
+        "android_client_info": {
+          "package_name": "com.seabird.whatsdev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606281387298-pigodfq0omfs2rmkpkup3ffj5kmdlcjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSc-MHYjojOl8t17ryK83oh8CKi91rvYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606281387298-pigodfq0omfs2rmkpkup3ffj5kmdlcjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
