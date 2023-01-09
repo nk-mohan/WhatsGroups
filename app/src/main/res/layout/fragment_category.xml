@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/linen"
-    tools:context=".ui.category.CategoryFragment">
+    tools:context=".ui.fragments.CategoryFragment">
 
     <com.seabird.whatsdev.ui.views.CustomRecyclerView
         android:id="@+id/rv_category_list"

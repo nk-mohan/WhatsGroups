@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.statussaver.StatusVideoFragment">
+    tools:context=".ui.fragments.StatusVideoFragment">
 
     <com.seabird.whatsdev.ui.views.CustomRecyclerView
         android:id="@+id/rv_status_video"

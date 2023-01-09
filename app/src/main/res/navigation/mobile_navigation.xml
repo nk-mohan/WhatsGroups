@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.seabird.whatsdev.ui.groups.GroupFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.GroupFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_group" />
 
     <fragment
         android:id="@+id/nav_category"
-        android:name="com.seabird.whatsdev.ui.category.CategoryFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.CategoryFragment"
         android:label="@string/menu_category"
         tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/nav_status_saver"
-        android:name="com.seabird.whatsdev.ui.statussaver.StatusSaverFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.StatusSaverFragment"
         android:label="@string/menu_status_saver"
         tools:layout="@layout/fragment_status_saver">
         <action
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/nav_status_viewer"
-        android:name="com.seabird.whatsdev.ui.statussaver.FullScreenMediaFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.FullScreenMediaFragment"
         android:label="@string/menu_status_saver"
         tools:layout="@layout/fragment_full_screen_media">
         <argument
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/nav_video_player"
-        android:name="com.seabird.whatsdev.ui.statussaver.VideoPlayerFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.VideoPlayerFragment"
         tools:layout="@layout/fragment_video_player">
         <argument
             android:name="video_uri"
@@ -53,25 +53,25 @@
 
     <fragment
         android:id="@+id/nav_favorite_groups"
-        android:name="com.seabird.whatsdev.ui.favorite.FavoriteFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.FavoriteFragment"
         android:label="@string/menu_favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/nav_trending_groups"
-        android:name="com.seabird.whatsdev.ui.trending.TrendingFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.TrendingFragment"
         android:label="@string/menu_trending"
         tools:layout="@layout/fragment_trending" />
 
     <fragment
         android:id="@+id/nav_add_group"
-        android:name="com.seabird.whatsdev.ui.addgroup.AddGroupFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.AddGroupFragment"
         android:label="@string/action_add_group"
         tools:layout="@layout/fragment_add_group" />
 
     <fragment
         android:id="@+id/nav_view_group"
-        android:name="com.seabird.whatsdev.ui.viewgroup.ViewGroupFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.ViewGroupFragment"
         android:label="@string/action_view_group"
         tools:layout="@layout/fragment_view_group" >
         <argument
@@ -81,7 +81,7 @@
 
     <fragment
         android:id="@+id/nav_category_group"
-        android:name="com.seabird.whatsdev.ui.category.CategoryGroupFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.CategoryGroupFragment"
         android:label="@string/action_view_group"
         tools:layout="@layout/fragment_category_group" >
         <argument
@@ -91,14 +91,14 @@
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.seabird.whatsdev.ui.settings.SettingsFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
 
     <fragment
         android:id="@+id/nav_grant_folder_access"
-        android:name="com.seabird.whatsdev.ui.statussaver.ProvideAccessFragment"
+        android:name="com.seabird.whatsdev.ui.fragments.ProvideAccessFragment"
         android:label="@string/provide_folder_access_button"
         tools:layout="@layout/fragment_provide_access" />
 

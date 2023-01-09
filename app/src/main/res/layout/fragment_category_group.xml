@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/linen"
-    tools:context=".ui.category.CategoryGroupFragment">
+    tools:context=".ui.fragments.CategoryGroupFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

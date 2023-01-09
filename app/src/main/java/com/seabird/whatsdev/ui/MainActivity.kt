@@ -25,8 +25,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.seabird.whatsdev.R
 import com.seabird.whatsdev.databinding.ActivityMainBinding
-import com.seabird.whatsdev.ui.statussaver.StatusSaverViewModel
-import com.seabird.whatsdev.ui.statussaver.StatusSavingAlertDialog
+import com.seabird.whatsdev.viewmodels.StatusSaverViewModel
+import com.seabird.whatsdev.ui.views.StatusSavingAlertDialog
 import com.seabird.whatsdev.utils.PermissionAlertDialog
 import com.seabird.whatsdev.utils.PermissionDialogListener
 import com.seabird.whatsdev.utils.PermissionManager
