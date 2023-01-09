@@ -217,6 +217,7 @@ class StatusImageFragment : Fragment() {
                         val persistedUriPermissions = requireActivity().contentResolver.persistedUriPermissions
                         persistedUriPermissions.forEach {
                             if (it.uri.toString().contains(statusDir)) {
+                                binding.disabledPermissionView.disabledViewLayout.visibility = View.GONE
                                 statusSaverViewModel.readSDK30(DocumentFile.fromTreeUri(requireContext(), it.uri)!!)
                                 return
                             }

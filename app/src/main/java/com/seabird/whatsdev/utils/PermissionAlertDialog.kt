@@ -1,6 +1,7 @@
 package com.seabird.whatsdev.utils
 
 import android.app.Activity
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
@@ -38,9 +39,9 @@ class PermissionAlertDialog @Inject constructor(private var activity: Activity) 
 
     private fun getDialogDescription(permissionType: String): CharSequence {
         return when (permissionType) {
-            STORAGE_PERMISSION -> activity.getString(R.string.storage_permission_alert_label)
-            STORAGE_PERMISSION_DENIED -> activity.getString(R.string.storage_permission_denied_alert_label)
-            else -> activity.getString(R.string.storage_permission_alert_label)
+            STORAGE_PERMISSION ->  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) activity.getString(R.string.storage_permission_alert_label_13) else activity.getString(R.string.storage_permission_alert_label)
+            STORAGE_PERMISSION_DENIED -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) activity.getString(R.string.storage_permission_denied_alert_label_13) else activity.getString(R.string.storage_permission_denied_alert_label)
+            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) activity.getString(R.string.storage_permission_alert_label_13) else activity.getString(R.string.storage_permission_alert_label)
         }
     }
 
