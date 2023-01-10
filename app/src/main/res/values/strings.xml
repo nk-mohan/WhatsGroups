@@ -43,7 +43,7 @@
     <string name="content_not_found">Content not found</string>
     <string name="status_folder_label">WhatsApp Status</string>
     <string name="status_saved">Status Saved</string>
-    <string name="share_status_desc">"Save Your Friend\'s Status \nStatus Downloader\nhttps://play.google.com/store/apps/details?id=com.wimlog.gogosing"</string>
+    <string name="share_status_desc">"Save Your Friend\'s Status \nWhatsApp Groups and Status Downloader\nhttps://play.google.com/store/apps/details?id=com.seabird.whats.groups.status.saver"</string>
 
 
     <string name="negative_button" tools:ignore="ButtonCase">CANCEL</string>
