@@ -21,7 +21,7 @@ class RequestTokenInterceptor : Interceptor {
         val request: Request = chain.request()
         return if (AppConstants.BASE_URL.contains(request.url.host)) {
             val newRequest: Request
-            val token = SharedPreferenceManager.getStringValue(AppConstants.ACCESS_TOKEN)!!.trim { it <= ' ' }
+            val token = SharedPreferenceManager.getStringValue(AppConstants.ACCESS_TOKEN)?.trim { it <= ' ' } ?: ""
             newRequest = request.newBuilder().header("Authorization", "Bearer $token").method(request.method, request.body).build()
             Log.d("RequestTokenInterceptor", newRequest.toString())
             try {

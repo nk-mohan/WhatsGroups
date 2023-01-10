@@ -13,8 +13,19 @@ android {
     namespace 'com.seabird.whatsdev'
     compileSdk 33
 
+    signingConfigs {
+        config {
+            keyAlias 'SeaBird'
+            keyPassword 'pahalNilavea'
+            storeFile file('whatsgroupsstatus.jks')
+            storePassword 'pahalNilavea'
+        }
+        aaptOptions {
+            noCompress "tflite"
+        }
+    }
+
     defaultConfig {
-        applicationId "com.seabird.whatsdev"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -25,11 +36,36 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            resValue("string", "app_name", "Dev")
             minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            resValue("string", "app_name", "Whats Groups, Status")
+            minifyEnabled true
+            debuggable false
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        production {
+            dimension "version"
+            applicationId "com.seabird.whats.groups.status.saver"
+        }
+
+        development {
+            dimension "version"
+            applicationId "com.seabird.whatsdev"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
