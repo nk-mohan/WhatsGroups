@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Whats Groups, Status</string>
+    <string name="nav_header_title">Whats Groups</string>
     <string name="nav_header_subtitle">seabirddevelopers@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -24,10 +24,10 @@
     <string name="continue_label">Continue</string>
     <string name="not_now_label">Not Now</string>
 
-    <string name="storage_permission_alert_label">To read &amp; save whatsapp status, allow Whats Groups, Status access to your Storage.</string>
-    <string name="storage_permission_denied_alert_label">Whats Groups, Status need the Storage Permission in order to read &amp; save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
-    <string name="storage_permission_alert_label_13">To read &amp; save whatsapp status, allow Whats Groups, Status access to your Photos and videos.</string>
-    <string name="storage_permission_denied_alert_label_13">Whats Groups, Status need the Photos and videos Permission in order to read &amp; save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Photos and videos\".</string>
+    <string name="storage_permission_alert_label">To read &amp; save whatsapp status, allow Whats Groups access to your Storage.</string>
+    <string name="storage_permission_denied_alert_label">Whats Groups need the Storage Permission in order to read &amp; save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
+    <string name="storage_permission_alert_label_13">To read &amp; save whatsapp status, allow Whats Groups access to your Photos and videos.</string>
+    <string name="storage_permission_denied_alert_label_13">Whats Groups need the Photos and videos Permission in order to read &amp; save whatsapp status, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Photos and videos\".</string>
     <string name="storage_permission_denied_label">Storage Permission Not Provided</string>
     <string name="enable_permission">Enable Permission</string>
 
@@ -112,7 +112,7 @@
     <string name="delete_favourite">Delete favourite</string>
 
 
-    <string name="provide_folder_access_title">Starting Android 11(Android R), \nWhats Groups, Status can no longer access Statuses easily due to Android Storage limitations.</string>
+    <string name="provide_folder_access_title">Starting Android 11(Android R), \nWhats Groups can no longer access Statuses easily due to Android Storage limitations.</string>
     <string name="provide_folder_access_steps">To access Statuses again, certain additional steps are required to be followed from your end. These are only required to be performed once.</string>
     <string name="provide_folder_access_steps_desc_1">Step 1. Click on "USE THIS FOLDER" on the next screen</string>
     <string name="provide_folder_access_steps_desc_2">Step 2. Click on "ALLOW"</string>

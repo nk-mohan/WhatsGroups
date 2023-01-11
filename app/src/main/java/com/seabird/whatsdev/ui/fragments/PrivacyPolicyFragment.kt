@@ -26,7 +26,7 @@ class PrivacyPolicyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.webView.loadUrl("https://sites.google.com/view/seabird-privacy-policy")
+        binding.webView.loadUrl("https://sites.google.com/view/whats-groups-status")
     }
 
     override fun onDestroyView() {

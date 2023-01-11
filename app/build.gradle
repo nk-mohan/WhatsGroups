@@ -45,7 +45,7 @@ android {
         }
 
         release {
-            resValue("string", "app_name", "Whats Groups, Status")
+            resValue("string", "app_name", "Whats Groups")
             minifyEnabled true
             debuggable false
             signingConfig signingConfigs.config

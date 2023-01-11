@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Whats Groups, Status"
+rootProject.name = "Whats Groups"
 include ':app'
 include ':zoomimageview'
 include ':spinnerview'
