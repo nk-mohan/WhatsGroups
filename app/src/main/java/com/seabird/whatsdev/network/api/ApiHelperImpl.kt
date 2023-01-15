@@ -14,6 +14,12 @@ class ApiHelperImpl @Inject constructor(private val openApiService: OpenApiServi
 
     override suspend fun getRecentGroups(pageNumber: Int, perPageResult: Int): Response<GroupListResponse> = authApiService.getRecentGroups(pageNumber, perPageResult)
 
+    override suspend fun getSearchGroups(
+        searchTerm: String,
+        pageNumber: Int,
+        perPageResult: Int
+    ): Response<GroupListResponse> = authApiService.getSearchGroups(searchTerm, pageNumber, perPageResult)
+
     override suspend fun getTrendingGroups(pageNumber: Int, perPageResult: Int): Response<GroupListResponse> = authApiService.getTrendingGroups(pageNumber, perPageResult)
 
     override suspend fun getCategoryGroups(pageNumber: Int, perPageResult: Int, categoryName: String): Response<GroupListResponse> = authApiService.getCategoryGroups(categoryName, pageNumber, perPageResult)

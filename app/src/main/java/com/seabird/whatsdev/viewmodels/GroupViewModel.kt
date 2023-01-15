@@ -27,6 +27,8 @@ class GroupViewModel @Inject constructor(
     val registerRes : LiveData<Resource<RegisterResponse>>
         get() = _registerRes
 
+    val searchKeyLiveData = MutableLiveData<String>()
+
     var groups = mutableListOf<GroupModel>()
     val addLoader = MutableLiveData<Boolean>()
     val removeLoader = MutableLiveData<Boolean>()
@@ -35,12 +37,24 @@ class GroupViewModel @Inject constructor(
 
     private var isFetching = false
     private var currentPage = 0
-    private var resultPerPage = 10
+    private var resultPerPage = 20
     private var totalPage = 1
+
+    var searchGroups = mutableListOf<GroupModel>()
+    val addSearchLoader = MutableLiveData<Boolean>()
+    val removeSearchLoader = MutableLiveData<Boolean>()
+    val fetchingSearchError = MutableLiveData<Boolean>()
+    var notifySearchGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
+
+    private var isSearchFetching = false
+    private var currentSearchPage = 0
+    private var totalSearchPage = 1
 
     init {
         groups = mutableListOf()
         notifyNewGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
+        searchGroups = mutableListOf()
+        notifySearchGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
         checkAndRegister()
     }
 
@@ -90,11 +104,11 @@ class GroupViewModel @Inject constructor(
         }
     }
 
-    private fun setUserListFetching(isFetching: Boolean) {
+    private fun setGroupsFetching(isFetching: Boolean) {
         this.isFetching = isFetching
     }
 
-    fun getUserListFetching(): Boolean {
+    fun getGroupsFetching(): Boolean {
         return isFetching
     }
 
@@ -105,7 +119,7 @@ class GroupViewModel @Inject constructor(
         fetchingError.value = false
         viewModelScope.launch(Dispatchers.IO) {
             currentPage += 1
-            setUserListFetching(true)
+            setGroupsFetching(true)
             val response = appRepository.getRecentGroups(currentPage, resultPerPage)
             if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!.data
@@ -125,7 +139,7 @@ class GroupViewModel @Inject constructor(
                     fetchingError.value = true
                 }
             }
-            setUserListFetching(false)
+            setGroupsFetching(false)
         }
     }
 
@@ -159,8 +173,73 @@ class GroupViewModel @Inject constructor(
     fun resetResult() {
         isFetching = false
         currentPage = 0
-        resultPerPage = 10
+        resultPerPage = 20
         totalPage = 1
         groups.clear()
     }
+
+    fun resetSearchResult() {
+        isSearchFetching = false
+        currentSearchPage = 0
+        resultPerPage = 20
+        totalSearchPage = 1
+        searchGroups.clear()
+    }
+
+    fun searchGroup(searchKey: String) {
+        searchKeyLiveData.postValue(searchKey)
+    }
+
+    fun getSearchGroupList(searchString: String) {
+        if (lastSearchPageFetched())
+            return
+        updateSearchLoaderStatus()
+        fetchingSearchError.value = false
+        viewModelScope.launch(Dispatchers.IO) {
+            currentSearchPage += 1
+            setSearchGroupFetching(true)
+            val response = appRepository.getSearchGroups(searchString, currentSearchPage, resultPerPage)
+            if (response.isSuccessful && response.body() != null) {
+                val data = response.body()!!.data
+                val meta = response.body()!!.meta
+                totalSearchPage = meta.total_pages
+                val startPosition = searchGroups.size
+                searchGroups.addAll(data)
+                viewModelScope.launch(Dispatchers.Main) {
+                    removeSearchLoader.postValue(true)
+                    notifySearchGroupsInsertedLiveData.postValue(Pair(startPosition, data.size))
+                    updateSearchLoaderStatus()
+                }
+            } else {
+                currentSearchPage -= 1
+                viewModelScope.launch(Dispatchers.Main) {
+                    removeSearchLoader.postValue(true)
+                    fetchingSearchError.value = true
+                }
+            }
+            setSearchGroupFetching(false)
+        }
+    }
+
+    private fun setSearchGroupFetching(isFetching: Boolean) {
+        this.isSearchFetching = isFetching
+    }
+
+    fun getSearchGroupFetching(): Boolean {
+        return isSearchFetching
+    }
+
+    private fun updateSearchLoaderStatus() {
+        if (lastSearchPageFetched())
+            removeSearchLoader.postValue(true)
+        else
+            addSearchLoader.postValue(true)
+    }
+
+    fun addSearchLoaderToTheList() {
+        addSearchLoader.postValue(true)
+    }
+
+    fun lastSearchPageFetched() = currentSearchPage >= totalSearchPage
+
 }

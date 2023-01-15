@@ -117,4 +117,5 @@
     <string name="provide_folder_access_steps_desc_1">Step 1. Click on "USE THIS FOLDER" on the next screen</string>
     <string name="provide_folder_access_steps_desc_2">Step 2. Click on "ALLOW"</string>
     <string name="provide_folder_access_button">Grant Folder Access</string>
+    <string name="search_label">Search Group</string>
 </resources>

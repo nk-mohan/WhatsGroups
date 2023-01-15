@@ -24,7 +24,7 @@ class CategoryGroupViewModel @Inject constructor(
 
     private var isFetching = false
     private var currentPage = 0
-    private var resultPerPage = 10
+    private var resultPerPage = 20
     private var totalPage = 1
 
     init {
@@ -87,7 +87,7 @@ class CategoryGroupViewModel @Inject constructor(
     fun resetResult() {
         isFetching = false
         currentPage = 0
-        resultPerPage = 10
+        resultPerPage = 20
         totalPage = 1
         groups.clear()
     }

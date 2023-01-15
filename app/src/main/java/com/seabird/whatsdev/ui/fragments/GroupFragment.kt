@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -57,6 +58,10 @@ class GroupFragment : Fragment() {
     }
 
     private val groupsAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), clickListener = groupItemClickListener) }
+    private val groupsSearchAdapter: GroupsAdapter by lazy { GroupsAdapter(mutableListOf(), clickListener = groupItemClickListener) }
+
+    private var searchString = AppConstants.EMPTY_STRING
+    private var mGroupType = GroupType.GROUPS
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +78,8 @@ class GroupFragment : Fragment() {
         initViews()
         setObservers()
         groupsAdapter.groupList = groupViewModel.groups
+        groupsSearchAdapter.groupList = groupViewModel.searchGroups
+        (activity as MainActivity).showSearchGroup()
     }
 
     private fun setObservers() {
@@ -98,6 +105,28 @@ class GroupFragment : Fragment() {
             }
         }
 
+        groupViewModel.notifySearchGroupsInsertedLiveData.observe(viewLifecycleOwner) {
+            groupsSearchAdapter.notifyItemRangeInserted(it.first, it.second)
+        }
+
+        groupViewModel.addSearchLoader.observe(viewLifecycleOwner) {
+            if (it) {
+                groupsSearchAdapter.addLoadingFooter()
+                binding.rvGroupList.setEmptyView(binding.emptyList.textEmptyView)
+            }
+        }
+
+        groupViewModel.removeSearchLoader.observe(viewLifecycleOwner) {
+            if (it)
+                groupsSearchAdapter.removeLoadingFooter()
+        }
+
+        groupViewModel.fetchingSearchError.observe(viewLifecycleOwner) {
+            if (it) {
+                showLoadGroupsError()
+            }
+        }
+
         binding.emptyList.retry.setOnClickListener {
             if (requireContext().isInternetAvailable()) {
                 groupViewModel.addLoaderToTheList()
@@ -107,10 +136,12 @@ class GroupFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            groupViewModel.resetResult()
-            groupsAdapter.resetAdapter()
-            groupViewModel.addLoaderToTheList()
-            groupViewModel.getGroupList()
+            if(searchString.isBlank()) {
+                groupViewModel.resetResult()
+                groupsAdapter.resetAdapter()
+                groupViewModel.addLoaderToTheList()
+                groupViewModel.getGroupList()
+            }
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
@@ -133,15 +164,32 @@ class GroupFragment : Fragment() {
                 }
             }
         }
+
+        groupViewModel.searchKeyLiveData.observe(viewLifecycleOwner) {
+            searchString = it
+            groupViewModel.resetSearchResult()
+            groupsSearchAdapter.resetAdapter()
+            if (it.isNullOrBlank()) {
+                mGroupType = GroupType.GROUPS
+            } else {
+                mGroupType = GroupType.SEARCH
+                groupViewModel.addSearchLoaderToTheList()
+                groupViewModel.getSearchGroupList(it)
+            }
+            setAdapterBasedOnSearchType()
+        }
     }
 
     private fun showLoadGroupsError() {
-        if (requireContext().isInternetAvailable())
+        if (requireContext().isInternetAvailable()) {
             binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
-        else binding.emptyList.textContent.text = getString(R.string.internet_not_available)
-
-        if (groupViewModel.groups.size > 1)
-            Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+            binding.emptyList.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_group_list_failed))
+        } else {
+            binding.emptyList.textContent.text = getString(R.string.internet_not_available)
+            binding.emptyList.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_not_available))
+            if ((searchString.isBlank() && groupViewModel.groups.size > 1) || (searchString.isNotBlank() && groupViewModel.searchGroups.size > 1))
+                Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initViews() {
@@ -167,21 +215,40 @@ class GroupFragment : Fragment() {
     ) {
         recyclerView.addOnScrollListener(object : PaginationScrollListener(layoutManager){
             override fun loadMoreItems() {
-                groupViewModel.getGroupList()
+                if (searchString.isBlank())
+                    groupViewModel.getGroupList()
+                else
+                    groupViewModel.getSearchGroupList(searchString)
             }
 
             override fun isLastPage(): Boolean {
-                return groupViewModel.lastPageFetched()
+                return if (searchString.isBlank()) groupViewModel.lastPageFetched() else groupViewModel.lastSearchPageFetched()
             }
 
             override fun isFetching(): Boolean {
-                return groupViewModel.getUserListFetching()
+                return if (searchString.isBlank()) groupViewModel.getGroupsFetching() else groupViewModel.getSearchGroupFetching()
             }
         })
     }
 
+    private fun setAdapterBasedOnSearchType() {
+        if (mGroupType == GroupType.GROUPS) {
+            binding.rvGroupList.adapter = groupsAdapter
+        } else if (mGroupType == GroupType.SEARCH) {
+            binding.rvGroupList.adapter = groupsSearchAdapter
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).hideSearchGroup()
+        searchString = AppConstants.EMPTY_STRING
+        mGroupType = GroupType.GROUPS
         _binding = null
     }
+}
+
+enum class GroupType {
+    GROUPS,
+    SEARCH
 }

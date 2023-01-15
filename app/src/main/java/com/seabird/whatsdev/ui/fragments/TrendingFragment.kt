@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -111,12 +112,16 @@ class TrendingFragment : Fragment() {
     }
 
     private fun showLoadGroupsError() {
-        if (requireContext().isInternetAvailable())
+        if (requireContext().isInternetAvailable()) {
             binding.emptyList.textContent.text = getString(R.string.group_list_not_loaded)
-        else binding.emptyList.textContent.text = getString(R.string.internet_not_available)
+            binding.emptyList.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_group_list_failed))
+        } else {
+            binding.emptyList.textContent.text = getString(R.string.internet_not_available)
+            binding.emptyList.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_not_available))
 
-        if (groupViewModel.groups.size > 1)
+            if (groupViewModel.groups.size > 1)
             Toast.makeText(requireContext(), getString(R.string.internet_not_available), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initViews() {
