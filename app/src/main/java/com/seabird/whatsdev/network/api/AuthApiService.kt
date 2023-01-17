@@ -12,6 +12,10 @@ interface AuthApiService {
     @GET("whatsgroups/")
     suspend fun getRecentGroups(@Query("page") page:Int, @Query("per_page") per_page:Int): Response<GroupListResponse>
 
+
+    @GET("whatsgroups/{search_name}")
+    suspend fun getSearchGroups(@Path("search_name") search_name: String, @Query("page") page:Int, @Query("per_page") per_page:Int): Response<GroupListResponse>
+
     @GET("whatsgroups/trending")
     suspend fun getTrendingGroups(@Query("page") page:Int, @Query("per_page") per_page:Int): Response<GroupListResponse>
 

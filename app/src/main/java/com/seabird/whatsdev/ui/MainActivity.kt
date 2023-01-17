@@ -15,6 +15,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -31,6 +32,7 @@ import com.seabird.whatsdev.utils.PermissionAlertDialog
 import com.seabird.whatsdev.utils.PermissionDialogListener
 import com.seabird.whatsdev.utils.PermissionManager
 import com.seabird.whatsdev.viewmodels.FavouriteGroupViewModel
+import com.seabird.whatsdev.viewmodels.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -40,9 +42,18 @@ class MainActivity : AppCompatActivity(), ActivityListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private var actionMode: ActionMode? = null
+    private var searchMenuItem: MenuItem? = null
 
     private val statusSaverViewModel: StatusSaverViewModel by viewModels()
     private val favouriteGroupViewModel: FavouriteGroupViewModel by viewModels()
+    private val groupViewModel: GroupViewModel by viewModels()
+
+    /**
+     * The handler to delay the search
+     */
+    private lateinit var mHandler: Handler
+
+    private var canSearchShow = false
 
     @Inject
     lateinit var permissionAlertDialog: PermissionAlertDialog
@@ -65,6 +76,8 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+
+        mHandler = Handler(Looper.getMainLooper())
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -118,7 +131,7 @@ class MainActivity : AppCompatActivity(), ActivityListener {
             }
             R.id.action_delete_favourite -> {
                 favouriteGroupViewModel.deleteSelectedItems()
-                Handler(Looper.getMainLooper()).postDelayed({
+                mHandler.postDelayed({
                     actionMode?.finish()
                 }, 250)
                 false
@@ -191,6 +204,60 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         if (::binding.isInitialized)
             binding.appBarMain.addGroup.visibility = View.VISIBLE
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_group_menu, menu)
+
+        searchMenuItem = menu?.findItem(R.id.action_search)
+        val mSearchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
+
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(searchString: String): Boolean {
+                val searchKey = searchString.trim()
+                mHandler.removeCallbacksAndMessages(null)
+                mHandler.postDelayed({
+                    groupViewModel.searchGroup(searchKey)
+                }, 500)
+                return true
+            }
+        })
+
+        searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                mSearchView.maxWidth = Integer.MAX_VALUE
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                return true
+            }
+        })
+
+        searchMenuItem?.isVisible = canSearchShow
+
+        if (canSearchShow)
+            lockNavigationDrawer()
+        else
+            unlockNavigationDrawer()
+
+        return true
+
+    }
+
+    override fun showSearchGroup() {
+        searchMenuItem?.isVisible = true
+        canSearchShow = true
+    }
+
+    override fun hideSearchGroup() {
+        searchMenuItem?.isVisible = false
+        canSearchShow = false
+    }
+
 
     private fun setUpStatusActionMode() {
         actionMode = binding.appBarMain.toolbar.startActionMode(object : ActionMode.Callback{
