@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:606281387298:android:fab6f9c043428fa9b7297b",
+        "mobilesdk_app_id": "1:606281387298:android:80c0501b0ebede67b7297b",
         "android_client_info": {
-          "package_name": "com.seabird.whats.groups.status.saver"
+          "package_name": "com.seabird.whats.groups.links.status.saver"
         }
       },
       "oauth_client": [

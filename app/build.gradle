@@ -28,8 +28,8 @@ android {
     defaultConfig {
         minSdk 24
         targetSdk 33
-        versionCode 6
-        versionName "1.0.2"
+        versionCode 7
+        versionName "1.1.0"
 
         buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -57,7 +57,7 @@ android {
     productFlavors {
         production {
             dimension "version"
-            applicationId "com.seabird.whats.groups.status.saver"
+            applicationId "com.seabird.whats.groups.links.status.saver"
         }
 
         development {
