@@ -94,6 +94,8 @@ class AddGroupFragment : Fragment() {
             Toast.makeText(requireContext(), getString(R.string.validation_category), Toast.LENGTH_SHORT).show()
         } else if (binding.groupNameEditText.text.toString().isEmpty()){
             Toast.makeText(requireContext(), getString(R.string.validation_group_name), Toast.LENGTH_SHORT).show()
+        } else if (isInvalidGroupName(binding.groupNameEditText.text.toString())) {
+            Toast.makeText(requireContext(), getString(R.string.validation_group_valid_name), Toast.LENGTH_SHORT).show()
         } else if (binding.groupLinkEditText.text.toString().isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.validation_group_link), Toast.LENGTH_SHORT).show()
         } else if (binding.groupDescriptionEditText.text.toString().isEmpty()) {
@@ -106,6 +108,18 @@ class AddGroupFragment : Fragment() {
                 categories[selectedPosition]
             ))
         }
+    }
+
+    private fun isInvalidGroupName(groupName: String): Boolean {
+        return if (groupName.contains("porn"))
+            true
+        else if (groupName.contains("sex"))
+            true
+        else if (groupName.contains("18"))
+            true
+        else if (groupName.contains("adult"))
+            true
+        else groupName.contains("desi")
     }
 
     override fun onDestroyView() {
