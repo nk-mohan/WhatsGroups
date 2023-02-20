@@ -229,10 +229,12 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
                 mSearchView.maxWidth = Integer.MAX_VALUE
+                lockNavigationDrawer()
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                unlockNavigationDrawer()
                 return true
             }
         })
@@ -240,9 +242,9 @@ class MainActivity : AppCompatActivity(), ActivityListener {
         searchMenuItem?.isVisible = canSearchShow
 
         if (canSearchShow)
-            lockNavigationDrawer()
-        else
             unlockNavigationDrawer()
+        else
+            lockNavigationDrawer()
 
         return true
 

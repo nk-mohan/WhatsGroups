@@ -84,6 +84,7 @@
     <string name="group_description">Group Description</string>
     <string name="validation_category">Please Select a Category</string>
     <string name="validation_group_name">Please Enter group name</string>
+    <string name="validation_group_valid_name">Please Enter valid group name</string>
     <string name="validation_group_link">Please Enter group link</string>
     <string name="validation_group_description">Please Enter group description</string>
     <string name="group_added">Group Added</string>
