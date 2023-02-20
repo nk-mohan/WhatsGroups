@@ -17,7 +17,7 @@ android {
         config {
             keyAlias 'SeaBird'
             keyPassword 'pahalNilavea'
-            storeFile file('whatsgroupsstatus.jks')
+            storeFile file('whatsgroups.jks')
             storePassword 'pahalNilavea'
         }
         aaptOptions {
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         minSdk 24
         targetSdk 33
-        versionCode 7
+        versionCode 9
         versionName "1.1.0"
 
         buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
