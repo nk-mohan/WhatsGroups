@@ -92,19 +92,19 @@ class AddGroupFragment : Fragment() {
         AppUtils.closeKeyboard(requireActivity())
         if (selectedPosition == 0) {
             Toast.makeText(requireContext(), getString(R.string.validation_category), Toast.LENGTH_SHORT).show()
-        } else if (binding.groupNameEditText.text.toString().isEmpty()){
+        } else if (binding.groupNameEditText.text.toString().isBlank()){
             Toast.makeText(requireContext(), getString(R.string.validation_group_name), Toast.LENGTH_SHORT).show()
         } else if (isInvalidGroupName(binding.groupNameEditText.text.toString())) {
             Toast.makeText(requireContext(), getString(R.string.validation_group_valid_name), Toast.LENGTH_SHORT).show()
-        } else if (binding.groupLinkEditText.text.toString().isEmpty()) {
+        } else if (binding.groupLinkEditText.text.toString().isBlank()) {
             Toast.makeText(requireContext(), getString(R.string.validation_group_link), Toast.LENGTH_SHORT).show()
-        } else if (binding.groupDescriptionEditText.text.toString().isEmpty()) {
+        } else if (binding.groupDescriptionEditText.text.toString().isBlank()) {
             Toast.makeText(requireContext(), getString(R.string.validation_group_description), Toast.LENGTH_SHORT).show()
         } else {
             addGroupViewModel.addGroup(AddGroupRequest(
-                binding.groupNameEditText.text.toString(),
-                binding.groupDescriptionEditText.text.toString(),
-                binding.groupLinkEditText.text.toString(),
+                binding.groupNameEditText.text.toString().trim(),
+                binding.groupDescriptionEditText.text.toString().trim(),
+                binding.groupLinkEditText.text.toString().trim(),
                 categories[selectedPosition]
             ))
         }

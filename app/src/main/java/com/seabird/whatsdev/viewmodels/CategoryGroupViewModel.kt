@@ -1,12 +1,15 @@
 package com.seabird.whatsdev.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.db.GroupRepository
 import com.seabird.whatsdev.network.model.GroupModel
 import com.seabird.whatsdev.network.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,6 +19,9 @@ class CategoryGroupViewModel @Inject constructor(
     private val appRepository: AppRepository,
     private val groupRepository: GroupRepository
 ): ViewModel() {
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.d(TAG, "exceptionHandler: $exception")
+    }
     var groups = mutableListOf<GroupModel>()
     val addLoader = MutableLiveData<Boolean>()
     val removeLoader = MutableLiveData<Boolean>()
@@ -45,7 +51,7 @@ class CategoryGroupViewModel @Inject constructor(
             return
         updateLoaderStatus()
         fetchingError.value = false
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(exceptionHandler) {
             currentPage += 1
             setUserListFetching(true)
             val response = appRepository.getCategoryGroups(currentPage, resultPerPage, categoryName)

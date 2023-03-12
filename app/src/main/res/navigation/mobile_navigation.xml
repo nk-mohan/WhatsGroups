@@ -11,11 +11,6 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_group" />
 
-    <fragment
-        android:id="@+id/nav_category"
-        android:name="com.seabird.whatsdev.ui.fragments.CategoryFragment"
-        android:label="@string/menu_category"
-        tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/nav_status_saver"
@@ -26,6 +21,12 @@
             android:id="@+id/action_status_to_status_viewer"
             app:destination="@id/nav_status_viewer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_category"
+        android:name="com.seabird.whatsdev.ui.fragments.CategoryFragment"
+        android:label="@string/menu_category"
+        tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/nav_status_viewer"

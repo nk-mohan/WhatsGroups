@@ -12,7 +12,7 @@ import com.seabird.whatsdev.network.model.UpdateViewedGroupResponse
 import com.seabird.whatsdev.network.other.Resource
 import com.seabird.whatsdev.network.repository.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +22,10 @@ class ViewGroupViewModel @Inject constructor(
     private val groupRepository: GroupRepository
 ): ViewModel() {
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.d(TAG, "exceptionHandler: $exception")
+    }
+
     private val _reportRes = MutableLiveData<Resource<UpdateViewedGroupResponse>?>()
 
     val reportRes : LiveData<Resource<UpdateViewedGroupResponse>?>
@@ -30,7 +34,7 @@ class ViewGroupViewModel @Inject constructor(
     var favouriteStatusUpdated = MutableLiveData<Boolean?>()
 
     fun updateViewedStatus(groupId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(exceptionHandler) {
             val response = appRepository.updateViewedGroupStatus(groupId.toString())
             if (response.isSuccessful)
                 Log.d(TAG, "updateViewedStatus isSuccessful")
@@ -41,7 +45,7 @@ class ViewGroupViewModel @Inject constructor(
 
     fun reportGroup(groupId: Int) {
         _reportRes.postValue(Resource.loading(null))
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val response = appRepository.reportGroup(groupId.toString())
             if (response.isSuccessful)
                 _reportRes.postValue(Resource.success(null))

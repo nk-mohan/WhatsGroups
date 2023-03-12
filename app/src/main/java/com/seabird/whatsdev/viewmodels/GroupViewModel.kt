@@ -1,10 +1,12 @@
 package com.seabird.whatsdev.viewmodels
 
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seabird.whatsdev.TAG
 import com.seabird.whatsdev.db.GroupRepository
 import com.seabird.whatsdev.network.model.*
 import com.seabird.whatsdev.network.other.Resource
@@ -12,6 +14,7 @@ import com.seabird.whatsdev.network.repository.AppRepository
 import com.seabird.whatsdev.utils.AppConstants
 import com.seabird.whatsdev.utils.SharedPreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +24,10 @@ class GroupViewModel @Inject constructor(
     private val appRepository: AppRepository,
     private val groupRepository: GroupRepository
 ): ViewModel() {
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.d(TAG, "exceptionHandler: $exception")
+    }
 
     private val _registerRes = MutableLiveData<Resource<RegisterResponse>>()
 
@@ -59,7 +66,7 @@ class GroupViewModel @Inject constructor(
     }
 
     fun checkAndRegister() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             if (SharedPreferenceManager.getStringValue(AppConstants.REFRESH_TOKEN).isNullOrBlank()) {
                 if (!SharedPreferenceManager.getBooleanValue(AppConstants.IS_REGISTERED)) {
                     _registerRes.postValue(Resource.loading(null))
@@ -117,7 +124,7 @@ class GroupViewModel @Inject constructor(
             return
         updateLoaderStatus()
         fetchingError.value = false
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(exceptionHandler) {
             currentPage += 1
             setGroupsFetching(true)
             val response = appRepository.getRecentGroups(currentPage, resultPerPage)
@@ -195,7 +202,7 @@ class GroupViewModel @Inject constructor(
             return
         updateSearchLoaderStatus()
         fetchingSearchError.value = false
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(exceptionHandler) {
             currentSearchPage += 1
             setSearchGroupFetching(true)
             val response = appRepository.getSearchGroups(searchString, currentSearchPage, resultPerPage)

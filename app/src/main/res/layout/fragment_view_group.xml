@@ -41,7 +41,7 @@
                         android:paddingStart="@dimen/dimen_10"
                         android:paddingEnd="@dimen/dimen_10"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/views_count_text_view"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
