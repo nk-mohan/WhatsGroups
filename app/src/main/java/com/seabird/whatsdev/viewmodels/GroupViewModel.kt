@@ -42,6 +42,7 @@ class GroupViewModel @Inject constructor(
     val fetchingError = MutableLiveData<Boolean>()
     var notifyNewGroupsInsertedLiveData = MutableLiveData<Pair<Int, Int>>()
 
+    private var isRetried = false
     private var isFetching = false
     private var currentPage = 0
     private var resultPerPage = 20
@@ -140,10 +141,16 @@ class GroupViewModel @Inject constructor(
                     updateLoaderStatus()
                 }
             } else {
-                currentPage -= 1
-                viewModelScope.launch(Dispatchers.Main) {
-                    removeLoader.postValue(true)
-                    fetchingError.value = true
+                if (response.code() == 401 && !isRetried) {
+                    isRetried = true
+                    SharedPreferenceManager.setStringValue(AppConstants.REFRESH_TOKEN, "")
+                    checkAndRegister()
+                } else {
+                    currentPage -= 1
+                    viewModelScope.launch(Dispatchers.Main) {
+                        removeLoader.postValue(true)
+                        fetchingError.value = true
+                    }
                 }
             }
             setGroupsFetching(false)
